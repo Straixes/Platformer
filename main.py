@@ -6,6 +6,13 @@ pygame.init()
 screen = pygame.display.set_mode((400, 300))
 pygame.display.set_caption("Bouton Pygame")
 
+# Couleurs
+WHITE = (255, 255, 255)
+BLUE = (0, 128, 255)
+DARK_BLUE = (0, 100, 200)
+
+# Police pour le texte
+font = pygame.font.Font(None, 36)
 
 # Rectangle du bouton (x, y, largeur, hauteur)
 button_rect = pygame.Rect(150, 120, 100, 50)
