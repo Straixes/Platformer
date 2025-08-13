@@ -1,10 +1,14 @@
 import pygame
 
 
-def deplacementPlayer(keys, speed, dt, playerPos, screen, playerSize, gravityForce, groundY, velocityY, jumpForce=500):
-    # Limites écran
-    if playerPos.x >= (screen.get_size()[0] - playerSize):
-        playerPos.x = screen.get_size()[0] - playerSize
+def deplacementPlayer(keys, speed, dt, playerPos, screen,
+                      playerWidth, playerHeight,
+                      gravityForce, groundFeetY,
+                      velocityY, jumpForce=600):
+
+    # Limites horizontales (on clamp avec la largeur)
+    if playerPos.x >= (screen.get_width() - playerWidth):
+        playerPos.x = screen.get_width() - playerWidth
     if playerPos.x <= 0:
         playerPos.x = 0
 
@@ -14,17 +18,25 @@ def deplacementPlayer(keys, speed, dt, playerPos, screen, playerSize, gravityFor
     if keys[pygame.K_d]:
         playerPos.x += speed * dt
 
-    # Saut (seulement si sur le sol)
-    if keys[pygame.K_SPACE] and playerPos.y >= groundY:
-        velocityY = -jumpForce
+    # Calcul du bas du joueur (pieds)
+    bottom = playerPos.y + playerHeight
+
+    # Saut (uniquement si au sol)
+    if keys[pygame.K_SPACE] and bottom >= groundFeetY - 1 and velocityY == 0:
+        velocityY = -jumpForce  # impulsion vers le haut
 
     # Gravité
     velocityY += gravityForce * dt
+
+    # Application du mouvement vertical
     playerPos.y += velocityY * dt
 
-    # Collision sol
-    if playerPos.y >= groundY:
-        playerPos.y = groundY
+    # Recalcul des pieds après déplacement
+    bottom = playerPos.y + playerHeight
+
+    # Collision sol (seulement si on descend)
+    if bottom >= groundFeetY and velocityY > 0:
+        playerPos.y = groundFeetY - playerHeight
         velocityY = 0
 
     return velocityY
