@@ -34,7 +34,7 @@ class buttonText:
         screen.blit(text_surface, text_rect)
 
     def update(self,resolution,mousePos,mouseClick,screen,changeResolution):
-        
+
         if changeResolution:
             self.sizeUpdate(resolution)
 
@@ -58,6 +58,7 @@ class buttonImage:
         
     
     #Changement de taille
+    
     def sizeUpdate(self,resolution):
         coefX,coefY=resolution[0]/1920,resolution[1]/1080
         self.buttonRect=pygame.Rect(self.posX*coefX, self.posY*coefY, self.sizeX*coefX, self.sizeY*coefY)
