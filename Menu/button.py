@@ -52,8 +52,8 @@ class buttonImage:
         self.sizeY=sizeY
 
         self.fonction=fonction
-        self.image=image
-        self.imagePressed=imagePressed
+        self.image=pygame.transform.scale(image, (self.buttonRect.width, self.buttonRect.height))
+        self.imagePressed=pygame.transform.scale(imagePressed, (self.buttonRect.width, self.buttonRect.height))
 
         
     

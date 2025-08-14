@@ -1,5 +1,6 @@
 import pygame
 from mainMenu import mainMenu
+from settingsMenu import settingsMenu
 class menuSelector():
     def __init__(self):
         pygame.init()
@@ -8,6 +9,7 @@ class menuSelector():
         # Créer les menus
         self.menus = {
             "main": mainMenu(self.screen,self),
+            "settings": settingsMenu(self.screen,self),
             
         }
         self.current_menu = "main"
@@ -27,7 +29,7 @@ class menuSelector():
 
             # Gérer et dessiner le menu 
             menu = self.menus[self.current_menu]
-            menu.updateButtons(resolution,mousePos, mouseClick,False)
+            menu.updateMenu(resolution,mousePos, mouseClick,False)
             pygame.display.flip()
 
 m=menuSelector()
