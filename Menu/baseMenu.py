@@ -5,7 +5,6 @@ class baseMenu:
         self.buttons = []
 
     def updateButtons(self,resolution, mousePos, mouseClick,changeResolution):
-        print(len(self.buttons))
         for btn in self.buttons:
             btn.update(resolution ,mousePos, mouseClick, self.screen,changeResolution)
 
