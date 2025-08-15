@@ -13,5 +13,7 @@ class settingsMenu(baseMenu):
         image=pygame.image.load(image_path).convert_alpha()
         self.buttons.append(buttonImage(10, 120, 25, 25, self.go_to_main,image,image))
 
+        self.commands.append((pygame.K_ESCAPE,self.go_to_main))
+
     def go_to_main(self):
         self.menuSelect.changeMenu("main")

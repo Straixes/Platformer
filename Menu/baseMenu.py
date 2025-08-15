@@ -11,6 +11,12 @@ class baseMenu:
             btn.update(resolution ,mousePos, mouseClick, self.screen,changeResolution)
 
     def checkCommands(self):
+        for event in pygame.event.get():
+            for command in self.commands:
+                print(event)
+                if command[0]==event.key:
+                    command[1]()
+
     def drawBackground(self):
         self.screen.fill((30, 30, 30))
 
