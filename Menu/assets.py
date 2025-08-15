@@ -85,3 +85,20 @@ class buttonImage:
 
         if mouseClick[0] and self.isOnButton(mousePos):
             self.fonction()
+
+
+class text():
+    def __init__(self,text,size,color,center,font=None): 
+        self.text=text
+        self.font=font
+        self.size=size
+        self.color=color
+        self.center=center
+    
+    def blitText(self,screen):
+        font = pygame.font.Font(self.font, self.size)
+        text_surface = font.render(self.text, True, self.color)
+        text_rect = text_surface.get_rect(center=self.center)
+        screen.blit(text_surface, text_rect)
+
+        
