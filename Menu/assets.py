@@ -1,4 +1,5 @@
 import pygame
+import time
 class buttonText:
     def __init__(self,posX,posY,sizeX,sizeY,fonction,text,colorText,color,colorPressed,font):
         self.buttonRect=pygame.Rect(posX, posY, sizeX, sizeY)
@@ -14,6 +15,9 @@ class buttonText:
         self.colorPressed=colorPressed
         self.font=font
         self.colorText=colorText
+
+        self.lastTimePressed=0
+        self.cooldown=0.35
     
     #Changement de taille
     def sizeUpdate(self,resolution):
@@ -40,7 +44,10 @@ class buttonText:
 
         self.draw(mousePos,screen)
         if mouseClick[0] and self.isOnButton(mousePos):
-            self.fonction()
+            actualTime=time.time()
+            if actualTime - self.lastTimePressed >= self.cooldown:
+                self.lastTimePressed=actualTime
+                self.fonction()
 
 class buttonImage:
     def __init__(self,posX,posY,sizeX,sizeY,fonction,image,imagePressed):
@@ -54,6 +61,9 @@ class buttonImage:
         self.fonction=fonction
         self.image=pygame.transform.scale(image, (self.buttonRect.width, self.buttonRect.height))
         self.imagePressed=pygame.transform.scale(imagePressed, (self.buttonRect.width, self.buttonRect.height))
+
+        self.lastTimePressed=0
+        self.cooldown=0.35
 
         
     
@@ -84,7 +94,11 @@ class buttonImage:
         self.draw(mousePos,screen)
 
         if mouseClick[0] and self.isOnButton(mousePos):
-            self.fonction()
+            actualTime=time.time()
+            if actualTime - self.lastTimePressed >= self.cooldown:
+                self.lastTimePressed=actualTime
+                self.fonction()
+                
 
 
 class text():
@@ -101,4 +115,28 @@ class text():
         text_rect = text_surface.get_rect(center=self.center)
         screen.blit(text_surface, text_rect)
 
-        
+class textsSettings():
+    def __init__(self,texts,size,color,center,font=None): 
+        self.texts=texts
+        self.currentTextIndex=len(texts)-1 #a changer plus tard il faut sauvegarder les parametres
+        self.font=font
+        self.size=size
+        self.color=color
+        self.center=center
+    
+    def getCurrentText(self):
+        return self.texts[self.currentTextIndex]
+    
+    def blitText(self,screen):
+        font = pygame.font.Font(self.font, self.size)
+        text_surface = font.render(self.getCurrentText(), True, self.color)
+        text_rect = text_surface.get_rect(center=self.center)
+        screen.blit(text_surface, text_rect)
+
+    def nextText(self):
+        self.currentTextIndex=(self.currentTextIndex+1) % len(self.texts)
+    
+    def previousText(self):
+        self.currentTextIndex=(self.currentTextIndex-1) % len(self.texts)
+
+    

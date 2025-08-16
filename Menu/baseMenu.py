@@ -6,6 +6,7 @@ class baseMenu:
         self.buttons = []
         self.commands = [] #forme (touche,fonction associé)
         self.text=[]
+        self.multiText=[]
 
     def updateButtons(self,resolution, mousePos, mouseClick,changeResolution):
         for btn in self.buttons:
@@ -13,6 +14,8 @@ class baseMenu:
 
     def blitTexts(self):
         for txt in self.text:
+            txt.blitText(self.screen)
+        for txt in self.multiText:
             txt.blitText(self.screen)
 
     def checkCommands(self):
