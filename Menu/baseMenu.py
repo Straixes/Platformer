@@ -26,7 +26,7 @@ class baseMenu:
                         command[1]()
 
     def drawBackground(self):
-        self.screen.fill((30, 30, 30))
+        self.screen.fill((150, 150, 150))
 
     def updateMenu(self,resolution, mousePos, mouseClick,changeResolution):
         self.drawBackground()
