@@ -4,7 +4,8 @@ import pygame
 def deplacementPlayer(keys, speed, dt, playerPos, screen,
                       playerWidth, playerHeight,
                       gravityForce, groundFeetY,
-                      velocityY, jumpForce=600):
+                      velocityY, player,jumpForce=600):
+    isRight = True
 
     # Limites horizontales (on clamp avec la largeur)
     if playerPos.x >= (screen.get_width() - playerWidth):
@@ -15,8 +16,11 @@ def deplacementPlayer(keys, speed, dt, playerPos, screen,
     # Déplacement horizontal
     if keys[pygame.K_q]:
         playerPos.x -= speed * dt
-    if keys[pygame.K_d]:
+        player.moveBackwardSprite()
+        
+    elif keys[pygame.K_d]:
         playerPos.x += speed * dt
+        player.moveForwardSprite()
 
     # Calcul du bas du joueur (pieds)
     bottom = playerPos.y + playerHeight
@@ -38,5 +42,6 @@ def deplacementPlayer(keys, speed, dt, playerPos, screen,
     if bottom >= groundFeetY and velocityY > 0:
         playerPos.y = groundFeetY - playerHeight
         velocityY = 0
+
 
     return velocityY
