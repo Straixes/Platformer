@@ -39,7 +39,16 @@ class settingsMenu(baseMenu):
 
         image_path = os.path.join(os.path.dirname(__file__), "textureButton", "settings.png")
         image=pygame.image.load(image_path).convert_alpha()
-        self.buttons.append(buttonImage(1840, 30, 50, 50, self.validChange,image,image))
+        self.buttons.append(buttonImage(1840, 30, 50, 50, self.go_to_main,image,image))
+
+        #bouton valider
+        image_path = os.path.join(os.path.dirname(__file__), "textureButton", "validButton.png")
+        image=pygame.image.load(image_path).convert_alpha()
+        imagep_path = os.path.join(os.path.dirname(__file__), "textureButton", "validButtonPressed.png")
+        imagep=pygame.image.load(imagep_path).convert_alpha()
+
+        self.buttons.append(buttonImage(1700, 950, 150, 75, self.validChange,image,imagep))
+        self.text.append(text("valider",35,(0,0,0),(1775,987)))
 
     #fonction pour
     def go_to_main(self):

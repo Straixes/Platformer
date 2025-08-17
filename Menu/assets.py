@@ -37,14 +37,16 @@ class buttonText:
         text_rect = text_surface.get_rect(center=self.buttonRect.center)
         screen.blit(text_surface, text_rect)
 
-    def update(self,resolution,mousePos,mouseClick,screen,changeResolution):
-
+    def update(self,screen,mouseClick,mouseGetClicked,mousePos):
         self.draw(mousePos,screen)
-        if mouseClick[0] and self.isOnButton(mousePos):
+        if mouseGetClicked and self.buttonRect.collidepoint(mousePos):
+            self.lastTimePressed=time.time()
+            self.fonction()   
+        """elif mouseClick[0]==1:
             actualTime=time.time()
-            if actualTime - self.lastTimePressed >= self.cooldown:
+            if self.buttonRect.collidepoint(mousePos) and actualTime - self.lastTimePressed >= self.cooldown:
                 self.lastTimePressed=actualTime
-                self.fonction()
+                self.fonction()"""
 
 class buttonImage:
     def __init__(self,posX,posY,sizeX,sizeY,fonction,image,imagePressed):
@@ -84,17 +86,16 @@ class buttonImage:
         else:
             screen.blit(self.image, self.buttonRect.topleft)
 
-        
-
-    def update(self,resolution,mousePos,mouseClick,screen,changeResolution):
-
+    def update(self,screen,mouseClick,mouseGetClicked,mousePos):
         self.draw(mousePos,screen)
-
-        if mouseClick[0] and self.isOnButton(mousePos):
+        if mouseGetClicked and self.buttonRect.collidepoint(mousePos):
+            self.lastTimePressed=time.time()
+            self.fonction()   
+        """elif mouseClick[0]==1:
             actualTime=time.time()
-            if actualTime - self.lastTimePressed >= self.cooldown:
+            if self.buttonRect.collidepoint(mousePos) and actualTime - self.lastTimePressed >= self.cooldown:
                 self.lastTimePressed=actualTime
-                self.fonction()
+                self.fonction()"""
                 
 
 

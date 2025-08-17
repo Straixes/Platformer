@@ -10,9 +10,9 @@ class baseMenu:
         self.multiText=[]
         self.background=None
 
-    def updateButtons(self,resolution, mousePos, mouseClick,changeResolution):
+    def updateButtons(self,mouseClick,mouseGetClicked,mousePos):
         for btn in self.buttons:
-            btn.update(resolution ,mousePos, mouseClick, self.screen,changeResolution)
+            btn.update(self.screen,mouseClick,mouseGetClicked,mousePos)
 
     def blitTexts(self):
         for txt in self.text:
@@ -36,8 +36,8 @@ class baseMenu:
     def drawBackground(self):
         self.background.blitBackground(self.screen)
 
-    def updateMenu(self,resolution, mousePos, mouseClick,changeResolution):
+    def updateMenu(self,mouseClick,mouseGetClicked,mousePos):
         self.drawBackground()
-        self.updateButtons(resolution, mousePos, mouseClick,changeResolution)
+        self.updateButtons(mouseClick,mouseGetClicked,mousePos)
         self.checkCommands()
         self.blitTexts()

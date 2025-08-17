@@ -20,16 +20,19 @@ class menuSelector():
         while self.running:
             mousePos = pygame.mouse.get_pos()
             mouseClick = pygame.mouse.get_pressed()
-            resolution = pygame.display.get_surface().get_size()
+            mouseGetClicked=False
 
             events = pygame.event.get()
             for event in events:
                 if event.type == pygame.QUIT:
                     self.running = False
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if event.button == 1: 
+                        mouseGetClicked=True
 
             # Gérer et dessiner le menu 
             menu = self.menus[self.current_menu]
-            menu.updateMenu(resolution,mousePos, mouseClick,False)
+            menu.updateMenu(mouseClick,mouseGetClicked,mousePos)
             pygame.display.flip()
 
 m=menuSelector()
