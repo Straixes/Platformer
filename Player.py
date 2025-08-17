@@ -1,29 +1,23 @@
 import pygame
 import os
+from Personnage import Personnage
 
-class Player:
+class Player(Personnage):
 
-    def __init__(self, name, health, texture, width, height):
-        self.name = name
-        self.health = health
-        self.texture = texture
-        self.width = width
-        self.height = height
-        self.image = pygame.image.load(os.path.join('img', f'{self.texture}.png'))
-        self.numberForMove = 0
+    def __init__(self, name, health, texturePath, width, height):
+        super().__init__(name, health, texturePath, width, height)
     
     def moveForwardSprite(self):
-        self.image = pygame.image.load(os.path.join('img', f'{self.texture}Forward.png'))
+        self.texture = pygame.image.load(os.path.join('img', f'{self.texturePath}Forward.png'))
 
     def moveBackwardSprite(self):
-        self.image = pygame.image.load(os.path.join('img', f'{self.texture}Backward.png'))
+        self.texture = pygame.image.load(os.path.join('img', f'{self.texturePath}Backward.png'))
 
     def jumpPlayer(self):
-        self.image = pygame.image.load(os.path.join('img', f'{self.texture}Jump.png'))
+        self.texture = pygame.image.load(os.path.join('img', f'{self.texturePath}Jump.png'))
         
-
     def drawPlayer(self, screen, position):
-        screen.blit(self.image, position)
+        screen.blit(self.texture, position)
 
     def getSizeSprite(self):
         return (self.width, self.height)

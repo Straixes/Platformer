@@ -1,6 +1,7 @@
 import pygame
 import utilitaire
 import Player
+import Obstacle
 
 pygame.init()
 screen = pygame.display.set_mode((1280, 720))
@@ -39,7 +40,7 @@ while running:
     
 
     # --- Rendu ---
-    screen.fill("black")
+    screen.fill("gray")
     
     # sol visuel
     pygame.draw.line(screen, "white", (0, groundFeetY), (1280, groundFeetY), 5)
@@ -47,6 +48,11 @@ while running:
     # joueur (position convertie en int)
     player.drawPlayer(screen, (int(playerPos.x), int(playerPos.y)))
     
+    obstacle = Obstacle.Obstacle(64, 64, "obstacleTest")
+    obstacle.drawObstacle(screen, (360, groundFeetY-obstacle.getHeight()))
+
+    obstacle.isCollide(player)
+
     pygame.display.flip()
 
 pygame.quit()
