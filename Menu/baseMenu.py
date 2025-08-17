@@ -1,4 +1,5 @@
 import pygame
+import os
 class baseMenu:
     def __init__(self, screen, menuSelect):
         self.screen = screen
@@ -7,6 +8,7 @@ class baseMenu:
         self.commands = [] #forme (touche,fonction associé)
         self.text=[]
         self.multiText=[]
+        self.background=None
 
     def updateButtons(self,resolution, mousePos, mouseClick,changeResolution):
         for btn in self.buttons:
@@ -25,8 +27,14 @@ class baseMenu:
                     if command[0]==event.key:
                         command[1]()
 
+    def updateSize(self,resolution):
+        for asset in self.buttons + self.text + self.multiText:
+            asset.updateSize(resolution)
+        self.background.updateSize(resolution)
+        
+
     def drawBackground(self):
-        self.screen.fill((150, 150, 150))
+        self.background.blitBackground(self.screen)
 
     def updateMenu(self,resolution, mousePos, mouseClick,changeResolution):
         self.drawBackground()

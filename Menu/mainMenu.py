@@ -2,11 +2,13 @@ import pygame
 from baseMenu import baseMenu 
 import os
 
-from assets import buttonImage,text
+from assets import buttonImage,text,background
 class mainMenu(baseMenu):
     def __init__(self, screen,menuSelect):
         super().__init__(screen, menuSelect)
         
+        defaultBackgroudPath = os.path.join(os.path.dirname(__file__), "textureBackground", "background.png")
+        self.background=background(pygame.image.load(defaultBackgroudPath).convert_alpha())
         #boutons
         image_path = os.path.join(os.path.dirname(__file__), "textureButton", "settings.png")
         image=pygame.image.load(image_path).convert_alpha()

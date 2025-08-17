@@ -2,15 +2,18 @@ import pygame
 from baseMenu import baseMenu 
 import os
 
-from assets import buttonImage,textsSettings,text
+from assets import buttonImage,textsSettings,text,background
 
 class settingsMenu(baseMenu):
-    def __init__(self, screen,menuSelect):
+    def __init__(self, screen, menuSelect):
         super().__init__(screen, menuSelect)
-        
         #Textchangeable
         self.multiText=[textsSettings(["1280 x 720","1366 x 768","1600 x 900"," 1920 x 1080 "],50,(0,0,0),(1300,200)),
                         textsSettings(["fenetré","plein ecran"],50,(0,0,0),(1300,275))]
+        
+
+        defaultBackgroudPath = os.path.join(os.path.dirname(__file__), "textureBackground", "background.png")
+        self.background=background(pygame.image.load(defaultBackgroudPath).convert_alpha())
 
         self.commands=[(pygame.K_ESCAPE,self.go_to_main)]
         #
@@ -44,7 +47,12 @@ class settingsMenu(baseMenu):
 
     def validChange(self):
         dictResolution={"1280 x 720" : (1280,720),"1366 x 768": (1366,768),"1600 x 900": (1600,900)," 1920 x 1080 ": (1920,1080)}
-        self.screen= pygame.display.set_mode(dictResolution[self.multiText[0].getCurrentText()])
+        if self.multiText[1].getCurrentText()=="plein ecran":
+            self.screen= pygame.display.set_mode(dictResolution[self.multiText[0].getCurrentText()], pygame.FULLSCREEN)
+            self.updateSize(dictResolution[self.multiText[0].getCurrentText()])
+        else:
+            self.screen= pygame.display.set_mode(dictResolution[self.multiText[0].getCurrentText()])
+            self.updateSize(dictResolution[self.multiText[0].getCurrentText()])
 
 
 
