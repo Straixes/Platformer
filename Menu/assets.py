@@ -1,7 +1,7 @@
 import pygame
 import time
 class buttonText:
-    def __init__(self,posX,posY,sizeX,sizeY,fonction,text,colorText,color,colorPressed,font):
+    def __init__(self,posX,posY,sizeX,sizeY,fonction,text,colorText,color,colorPressed,font,canHold=False):
         self.buttonRect=pygame.Rect(posX, posY, sizeX, sizeY)
 
         self.posX=posX
@@ -16,6 +16,7 @@ class buttonText:
         self.font=font
         self.colorText=colorText
 
+        self.canHold=canHold
         self.lastTimePressed=0
         self.cooldown=0.15
     
@@ -42,14 +43,14 @@ class buttonText:
         if mouseGetClicked and self.buttonRect.collidepoint(mousePos):
             self.lastTimePressed=time.time()
             self.fonction()   
-        """elif mouseClick[0]==1:
+        elif mouseClick[0]==1 and self.canHold:
             actualTime=time.time()
             if self.buttonRect.collidepoint(mousePos) and actualTime - self.lastTimePressed >= self.cooldown:
                 self.lastTimePressed=actualTime
-                self.fonction()"""
+                self.fonction()
 
 class buttonImage:
-    def __init__(self,posX,posY,sizeX,sizeY,fonction,image,imagePressed):
+    def __init__(self,posX,posY,sizeX,sizeY,fonction,image,imagePressed,canHold=False):
         self.buttonRect=pygame.Rect(posX, posY, sizeX, sizeY)
 
         self.posX=posX
@@ -63,6 +64,7 @@ class buttonImage:
         self.imagePressed=pygame.transform.scale(imagePressed, (self.buttonRect.width, self.buttonRect.height))
         self.initialImagePressed=self.imagePressed
 
+        self.canHold=canHold
         self.lastTimePressed=0
         self.cooldown=0.15
 
@@ -91,11 +93,11 @@ class buttonImage:
         if mouseGetClicked and self.buttonRect.collidepoint(mousePos):
             self.lastTimePressed=time.time()
             self.fonction()   
-        """elif mouseClick[0]==1:
+        elif mouseClick[0]==1 and self.canHold:
             actualTime=time.time()
             if self.buttonRect.collidepoint(mousePos) and actualTime - self.lastTimePressed >= self.cooldown:
                 self.lastTimePressed=actualTime
-                self.fonction()"""
+                self.fonction()
                 
 
 

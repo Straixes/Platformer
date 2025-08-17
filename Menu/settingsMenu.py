@@ -29,13 +29,13 @@ class settingsMenu(baseMenu):
 
         #boutons resolution
         self.text.append(text("résolution",75,(0,0,0),(400,self.multiText[0].center[1])))
-        self.buttons.append(buttonImage(self.multiText[0].center[0]+150, self.multiText[0].center[1]-25, 50, 50, self.multiText[0].nextText,imageSettingsR,imageSettingsRP))
-        self.buttons.append(buttonImage(self.multiText[0].center[0]-200, self.multiText[0].center[1]-25, 50, 50, self.multiText[0].previousText,imageSettingsL,imageSettingsLP))
+        self.buttons.append(buttonImage(self.multiText[0].center[0]+150, self.multiText[0].center[1]-25, 50, 50, self.multiText[0].nextText,imageSettingsR,imageSettingsRP,True))
+        self.buttons.append(buttonImage(self.multiText[0].center[0]-200, self.multiText[0].center[1]-25, 50, 50, self.multiText[0].previousText,imageSettingsL,imageSettingsLP,True))
 
         #boutons fullscreen
         self.text.append(text("plein écran",75,(0,0,0),(400,self.multiText[1].center[1])))
-        self.buttons.append(buttonImage(self.multiText[1].center[0]+150, self.multiText[1].center[1]-25, 50, 50, self.multiText[1].nextText,imageSettingsR,imageSettingsRP))
-        self.buttons.append(buttonImage(self.multiText[1].center[0]-200, self.multiText[1].center[1]-25, 50, 50, self.multiText[1].previousText,imageSettingsL,imageSettingsLP))
+        self.buttons.append(buttonImage(self.multiText[1].center[0]+150, self.multiText[1].center[1]-25, 50, 50, self.multiText[1].nextText,imageSettingsR,imageSettingsRP,True))
+        self.buttons.append(buttonImage(self.multiText[1].center[0]-200, self.multiText[1].center[1]-25, 50, 50, self.multiText[1].previousText,imageSettingsL,imageSettingsLP,True))
 
         image_path = os.path.join(os.path.dirname(__file__), "textureButton", "settings.png")
         image=pygame.image.load(image_path).convert_alpha()

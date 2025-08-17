@@ -32,7 +32,7 @@ class menuSelector():
 
             # Gérer et dessiner le menu 
             menu = self.menus[self.current_menu]
-            menu.updateMenu(mouseClick,mouseGetClicked,mousePos)
+            menu.updateMenu(mouseClick,mouseGetClicked,mousePos,events)
             pygame.display.flip()
 
 m=menuSelector()

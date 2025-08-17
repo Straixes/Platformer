@@ -20,8 +20,8 @@ class baseMenu:
         for txt in self.multiText:
             txt.blitText(self.screen)
 
-    def checkCommands(self):
-        for event in pygame.event.get():
+    def checkCommands(self,events):
+        for event in events:
             for command in self.commands:
                 if event.type==pygame.KEYDOWN:
                     if command[0]==event.key:
@@ -36,8 +36,8 @@ class baseMenu:
     def drawBackground(self):
         self.background.blitBackground(self.screen)
 
-    def updateMenu(self,mouseClick,mouseGetClicked,mousePos):
+    def updateMenu(self,mouseClick,mouseGetClicked,mousePos,events):
         self.drawBackground()
         self.updateButtons(mouseClick,mouseGetClicked,mousePos)
-        self.checkCommands()
+        self.checkCommands(events)
         self.blitTexts()
