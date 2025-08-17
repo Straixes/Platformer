@@ -16,8 +16,8 @@ class Player(Personnage):
     def jumpPlayer(self):
         self.texture = pygame.image.load(os.path.join('img', f'{self.texturePath}Jump.png'))
         
-    def drawPlayer(self, screen, xCoord, yCoord):
-        screen.blit(self.texture, (xCoord, yCoord))
+    def drawPlayer(self, screen):
+        screen.blit(self.texture, (self.rect.x, self.rect.y))
 
     def getSizeSprite(self):
         return (self.width, self.height)

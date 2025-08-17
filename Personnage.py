@@ -12,13 +12,11 @@ class Personnage(pygame.sprite.Sprite):
         self.texture = pygame.image.load(os.path.join('img', f'{texturePath}.png'))
         self.width = width
         self.height = height
-        self.xCoord = xCoord
-        self.yCoord = yCoord
         self.level = level
 
-        self.rect = self.texture.get_rect()
+        self.rect = self.texture.get_rect(topleft=(xCoord, yCoord))
 
-    def getWitdh(self):
+    def getWidth(self):
         return self.width
     
     def getHeight(self):
@@ -26,8 +24,16 @@ class Personnage(pygame.sprite.Sprite):
     
     def getRect(self):
         return self.rect
+
+    def getXCoord(self):
+        return self.rect.x
+
+    def getYCoord(self):
+        return self.rect.y
     
     def isCollide(self, collider):
         assert isinstance(collider, (Obstacle, Personnage)), "Ce n'est pas un personnage."
         if self.rect.colliderect(collider.rect):
-            pass
+            print("1")
+        else:
+            print("2")

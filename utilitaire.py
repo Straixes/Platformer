@@ -1,47 +1,40 @@
 import pygame
 
 
-def deplacementPlayer(keys, speed, dt, playerPos, screen,
-                      playerWidth, playerHeight,
+def deplacementPlayer(keys, speed, dt, player,
                       gravityForce, groundFeetY,
-                      velocityY, player,jumpForce=600):
-    isRight = True
-
-    # Limites horizontales (on clamp avec la largeur)
-    if playerPos.x >= (screen.get_width() - playerWidth):
-        playerPos.x = screen.get_width() - playerWidth
-    if playerPos.x <= 0:
-        playerPos.x = 0
+                      velocityY, jumpForce=600):
+    # Limites horizontales
+    if player.rect.x >= (1280 - player.width):  # ou screen.get_width()
+        player.rect.x = 1280 - player.width
+    if player.rect.x <= 0:
+        player.rect.x = 0
 
     # Déplacement horizontal
     if keys[pygame.K_q]:
-        playerPos.x -= speed * dt
+        player.rect.x -= speed * dt
         player.moveBackwardSprite()
-        
     elif keys[pygame.K_d]:
-        playerPos.x += speed * dt
+        player.rect.x += speed * dt
         player.moveForwardSprite()
 
-    # Calcul du bas du joueur (pieds)
-    bottom = playerPos.y + playerHeight
+    # Calcul du bas du joueur
+    bottom = player.rect.y + player.height
 
-    # Saut (uniquement si au sol)
+    # Saut
     if keys[pygame.K_SPACE] and bottom >= groundFeetY - 1 and velocityY == 0:
-        velocityY = -jumpForce  # impulsion vers le haut
+        velocityY = -jumpForce
 
     # Gravité
     velocityY += gravityForce * dt
 
-    # Application du mouvement vertical
-    playerPos.y += velocityY * dt
+    # Mouvement vertical
+    player.rect.y += velocityY * dt
 
-    # Recalcul des pieds après déplacement
-    bottom = playerPos.y + playerHeight
-
-    # Collision sol (seulement si on descend)
+    # Collision avec le sol
+    bottom = player.rect.y + player.height
     if bottom >= groundFeetY and velocityY > 0:
-        playerPos.y = groundFeetY - playerHeight
+        player.rect.y = groundFeetY - player.height
         velocityY = 0
-
 
     return velocityY

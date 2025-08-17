@@ -18,7 +18,7 @@ groundFeetY = 600            # altitude des pieds quand on est posé
 velocityY = 0
 isRight = True
 
-player = Player.Player("Quentin", 100, "sprite", playerWidth, playerHeight)
+player = Player.Player("Quentin", 100, "sprite", playerWidth, playerHeight, 200, groundFeetY-playerHeight, 1)
 
 while running:
     dt = clock.tick(60) / 1000  # delta time en secondes
@@ -32,10 +32,9 @@ while running:
     
     # --- Physique / déplacement ---
     velocityY = utilitaire.deplacementPlayer(
-        keys, speed, dt, playerPos, screen,
-        playerWidth, playerHeight,
+        keys, speed, dt, player,
         gravityForce, groundFeetY,
-        velocityY, player,jumpForce
+        velocityY, jumpForce
     )
 
     # --- Rendu ---
@@ -45,14 +44,12 @@ while running:
     pygame.draw.line(screen, "white", (0, groundFeetY), (1280, groundFeetY), 5)
     
     # joueur (position convertie en int)
-    player.drawPlayer(screen, (int(playerPos.x), int(playerPos.y)))
+    player.drawPlayer(screen)
     
-    obstacle = Obstacle.Obstacle(64, 64, "obstacleTest")
-    obstacle.drawObstacle(screen, (360, groundFeetY-obstacle.getHeight()))
+    obstacle = Obstacle.Obstacle(64, 64, "obstacleTest", 360, groundFeetY-64)
+    obstacle.drawObstacle(screen)
 
     player.isCollide(obstacle)
-    print(player.getRect())
-    print(obstacle.getRect())
 
     pygame.display.flip()
 
