@@ -17,7 +17,7 @@ class buttonText:
         self.colorText=colorText
 
         self.lastTimePressed=0
-        self.cooldown=0.35
+        self.cooldown=0.15
     
     #Changement de taille
     def sizeUpdate(self,resolution):
@@ -63,7 +63,7 @@ class buttonImage:
         self.imagePressed=pygame.transform.scale(imagePressed, (self.buttonRect.width, self.buttonRect.height))
 
         self.lastTimePressed=0
-        self.cooldown=0.35
+        self.cooldown=0.15
 
         
     
