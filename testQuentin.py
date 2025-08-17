@@ -37,7 +37,6 @@ while running:
         gravityForce, groundFeetY,
         velocityY, player,jumpForce
     )
-    
 
     # --- Rendu ---
     screen.fill("gray")
@@ -51,7 +50,9 @@ while running:
     obstacle = Obstacle.Obstacle(64, 64, "obstacleTest")
     obstacle.drawObstacle(screen, (360, groundFeetY-obstacle.getHeight()))
 
-    obstacle.isCollide(player)
+    player.isCollide(obstacle)
+    print(player.getRect())
+    print(obstacle.getRect())
 
     pygame.display.flip()
 
