@@ -1,7 +1,7 @@
 import pygame
 import os
 class baseMenu:
-    def __init__(self, screen, menuSelect):
+    def __init__(self, screen, menuSelect=None):
         self.screen = screen
         self.menuSelect = menuSelect
         self.buttons = []

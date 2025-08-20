@@ -1,12 +1,12 @@
 import pygame
 from mainMenu import mainMenu
 from settingsMenu import settingsMenu
+from inventoryMenu import inventoryMenu
 class menuSelector():
-    def __init__(self):
+    def __init__(self,screen):
         pygame.init()
-        self.screen = pygame.display.set_mode((0,0))  # Taille initiale
+        self.screen = screen
         self.running = True
-        # Créer les menus
         self.menus = {
             "main": mainMenu(self.screen,self),
             "settings": settingsMenu(self.screen,self),
@@ -35,5 +35,5 @@ class menuSelector():
             menu.updateMenu(mouseClick,mouseGetClicked,mousePos,events)
             pygame.display.flip()
 
-m=menuSelector()
+m=menuSelector(pygame.display.set_mode((0,0)))
 m.run()

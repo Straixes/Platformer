@@ -5,9 +5,13 @@ class equipment():
         self.slot=slot
         self.level=level
         self.experience=experience
+
         self.quality = quality #Rusted / Forged / Enchanted / Blessed / Divine
+        self.qualitySortDict={"Rusted":1,"Forged":2,"Enchanted":3,"Blessed":4,"Divine":5} 
+        self.qualitySort=self.qualitySortDict[quality]
         self.qualityUpgradeStatBoostDict={"Rusted":1.01,"Forged":1.02,"Enchanted":1.035,"Blessed":1.045,"Divine":1.06}
         self.qualityUpgradeStatBoost=self.qualityUpgradeStatBoostDict[quality]
+
         self.effect=effect
         self.damageBoost=damageBoost
         self.armourBoost=armourBoost
