@@ -1,16 +1,14 @@
 import pygame
 
-
 def deplacementPlayer(keys, speed, dt, player,
                       gravityForce, groundFeetY,
-                      velocityY, jumpForce=600):
-    # Limites horizontales
-    if player.rect.x >= (1280 - player.width):  # ou screen.get_width()
-        player.rect.x = 1280 - player.width
-    if player.rect.x <= 0:
-        player.rect.x = 0
+                      velocityY, obstacles, jumpForce=600):
 
-    # Déplacement horizontal
+    # Limites horizontales
+    player.rect.x = max(0, min(player.rect.x, 1280 - player.width))
+
+    # --- Déplacement horizontal ---
+    old_rect = player.rect.copy()
     if keys[pygame.K_q]:
         player.rect.x -= speed * dt
         player.moveBackwardSprite()
@@ -18,23 +16,43 @@ def deplacementPlayer(keys, speed, dt, player,
         player.rect.x += speed * dt
         player.moveForwardSprite()
 
-    # Calcul du bas du joueur
+    # Collision horizontale pixel-perfect
+    hits = pygame.sprite.spritecollide(player, obstacles, False, pygame.sprite.collide_mask)
+    if hits:
+        player.rect.x = old_rect.x
+
+    # --- Calcul du bas ---
     bottom = player.rect.y + player.height
 
-    # Saut
+    # --- Saut ---
     if keys[pygame.K_SPACE] and bottom >= groundFeetY - 1 and velocityY == 0:
         velocityY = -jumpForce
 
-    # Gravité
+    # --- Gravité ---
     velocityY += gravityForce * dt
 
-    # Mouvement vertical
+    # --- Mouvement vertical ---
+    old_rect = player.rect.copy()
     player.rect.y += velocityY * dt
 
-    # Collision avec le sol
+    # Collision verticale pixel-perfect
+    hits = pygame.sprite.spritecollide(player, obstacles, False, pygame.sprite.collide_mask)
+    if hits:
+        if velocityY > 0:  # on tombe
+            player.rect.bottom = hits[0].rect.top
+        elif velocityY < 0:  # on monte
+            player.rect.top = hits[0].rect.bottom
+        velocityY = 0
+
+    # Collision sol
     bottom = player.rect.y + player.height
     if bottom >= groundFeetY and velocityY > 0:
         player.rect.y = groundFeetY - player.height
         velocityY = 0
 
     return velocityY
+
+
+def drawObstacles(screen, listOfObstacles):
+    for obs in listOfObstacles:
+        obs.drawObstacle(screen)

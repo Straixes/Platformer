@@ -10,15 +10,28 @@ running = True
 
 # --- Paramètres ---
 speed = 300
-gravityForce = 6250         # px/s²
-jumpForce = 1300              # px/s
+gravityForce = 6250
+jumpForce = 1400
 playerWidth, playerHeight = 90, 90
-playerPos = pygame.Vector2(190, 90)  # coin haut-gauche
-groundFeetY = 600            # altitude des pieds quand on est posé
-velocityY = 0
-isRight = True
+groundFeetY = 600
 
-player = Player.Player("Quentin", 100, "sprite", playerWidth, playerHeight, 200, groundFeetY-playerHeight, 1)
+font = pygame.font.SysFont("Arial", 24)
+
+# Groupes
+listObstacles = pygame.sprite.Group()
+listPlayer = pygame.sprite.Group()
+
+# Création obstacle et ajout une seule fois
+obstacle = Obstacle.Obstacle(64, 64, "obstacleTest", 360, groundFeetY - 64)
+listObstacles.add(obstacle)
+
+# Création joueur
+player = Player.Player("Quentin", 100, "sprite", playerWidth, playerHeight,
+                       200, groundFeetY - playerHeight, 1, screen)
+listPlayer.add(player)
+
+# Cooldown dégâts
+damage_timer = 0
 
 while running:
     dt = clock.tick(60) / 1000  # delta time en secondes
@@ -29,27 +42,42 @@ while running:
 
     keys = pygame.key.get_pressed()
 
-    
     # --- Physique / déplacement ---
     velocityY = utilitaire.deplacementPlayer(
         keys, speed, dt, player,
         gravityForce, groundFeetY,
-        velocityY, jumpForce
+        getattr(player, 'velocityY', 0),  # initial velocity
+        listObstacles,
+        jumpForce
     )
+    player.velocityY = velocityY
+
+    # --- Pixel-perfect collision et dégâts avec cooldown ---
+    hits = pygame.sprite.spritecollide(player, listObstacles, False, pygame.sprite.collide_mask)
+    if hits:
+        player.takeDamage(15)
 
     # --- Rendu ---
-    screen.fill("gray")
-    
-    # sol visuel
-    pygame.draw.line(screen, "white", (0, groundFeetY), (1280, groundFeetY), 5)
-    
-    # joueur (position convertie en int)
-    player.drawPlayer(screen)
-    
-    obstacle = Obstacle.Obstacle(64, 64, "obstacleTest", 360, groundFeetY-64)
-    obstacle.drawObstacle(screen)
+    screen.fill((120, 120, 120))
 
-    player.isCollide(obstacle)
+    # FPS
+    fps = int(clock.get_fps())
+    fps_text = font.render(f"FPS: {fps}", True, pygame.Color("white"))
+    screen.blit(fps_text, (1200, 10))
+
+    # Sol
+    pygame.draw.line(screen, (255, 255, 255), (0, groundFeetY), (1280, groundFeetY), 5)
+
+    # Joueur
+    player.drawPlayerHealthBar()
+    player.drawPlayer()
+
+    # Regénération santé (facultatif)
+    if player.health < 100:
+        player.heal(1)
+
+    # Obstacles
+    utilitaire.drawObstacles(screen, listObstacles)
 
     pygame.display.flip()
 
