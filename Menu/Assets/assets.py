@@ -180,3 +180,39 @@ class background():
     def updateSize(self,resolution):
         self.background=pygame.transform.scale(self.initialbackground, resolution)
 
+class image():
+    def __init__(self,posX,posY,sizeX,sizeY,imageName,condition=None):
+        self.buttonRect=pygame.Rect(posX, posY, sizeX, sizeY)
+
+        self.posX=posX
+        self.posY=posY
+        self.sizeX=sizeX
+        self.sizeY=sizeY
+        self.condition=condition
+
+        
+        imagePath = os.path.join(os.path.dirname(__file__), "textureImage", imageName)
+        image=pygame.image.load(imagePath).convert_alpha()
+        self.image=pygame.transform.scale(image, (self.buttonRect.width, self.buttonRect.height))
+        self.initialImage=self.image
+
+        
+    
+    #Changement de taille
+    
+    def updateSize(self,resolution):
+        coefX,coefY=resolution[0]/1920,resolution[1]/1080
+        self.buttonRect=pygame.Rect(self.posX*coefX, self.posY*coefY, self.sizeX*coefX, self.sizeY*coefY)
+        self.image=pygame.transform.scale(self.initialImage, (self.buttonRect.width, self.buttonRect.height))
+
+    #detecte si curseur sur bouton
+
+    def draw(self,screen):
+        if self.condition():
+            screen.blit(self.image, self.buttonRect.topleft)
+        
+
+    def update(self,screen):
+        self.draw(screen)
+        
+            

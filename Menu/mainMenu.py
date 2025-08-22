@@ -1,8 +1,8 @@
-import pygame
-from baseMenu import baseMenu 
-import os
 
-from Assets.assets import buttonImage,text,background
+from .baseMenu import baseMenu 
+
+
+from .Assets.assets import buttonImage,text,background
 class mainMenu(baseMenu):
     def __init__(self, screen,menuSelect):
         super().__init__(screen, menuSelect)

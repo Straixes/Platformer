@@ -1,7 +1,7 @@
 import pygame
-from mainMenu import mainMenu
-from settingsMenu import settingsMenu
-from inventoryMenu import inventoryMenu
+from .mainMenu import mainMenu
+from .settingsMenu import settingsMenu
+from .inventoryMenu import inventoryMenu
 class menuSelector():
     def __init__(self,screen):
         pygame.init()

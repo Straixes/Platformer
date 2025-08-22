@@ -1,8 +1,14 @@
 from inventory.inventory import inventory
+from inventory.equipment import equipment
 from Menu.inventoryMenu import inventoryMenu
 import pygame
-
-menu = inventoryMenu(pygame.display.set_mode((0,0)),inventory())
+from random import randint,choice
+pygame.init()
+pygame.display.set_mode((0,0))
+inv=inventory()
+for i in range(27):
+    inv.addEquipment(equipment("swordIcon",'sword',4,randint(0,150),choice(['forged','blessed','divine','rusted']),None,0,0,0))
+menu = inventoryMenu(pygame.display.set_mode((0,0)),inv)
 
 run=True
 while run:
@@ -14,7 +20,7 @@ while run:
     for event in events:
         if event.type == pygame.QUIT:
            run = False
-           if event.type == pygame.MOUSEBUTTONDOWN:
+        if event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 1: 
                 mouseGetClicked=True
 
