@@ -19,6 +19,7 @@ class Player(Personnage):
         self.texture = self.sprites[self.state]
         self.mask = pygame.mask.from_surface(self.texture)
         self.velocity_y = 0
+        self.jump_pressed_last_frame = False
 
     def update_state(self, keys):
         if self.velocity_y < 0:

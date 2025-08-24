@@ -5,7 +5,7 @@ def is_on_ground_or_obstacle(player, ground_y, obstacles, margin=5):
         return True
 
     for obs in obstacles:
-        if player.rect.right > obs.rect.left and player.rect.left < obs.rect.right:
+        if player.rect.right > obs.rect.left or player.rect.left < obs.rect.right:
             if 0 <= player.rect.bottom - obs.rect.top <= margin:
                 return True
     return False
@@ -31,11 +31,14 @@ def move_player(player, keys, dt, speed, gravity, jump_force, ground_y, obstacle
     player.velocity_y += gravity * dt
 
     # Saut
-    if keys[pygame.K_SPACE] and is_on_ground_or_obstacle(player, ground_y, obstacles):
+    space_pressed = keys[pygame.K_SPACE]
+
+    if space_pressed and not player.jump_pressed_last_frame and is_on_ground_or_obstacle(player, ground_y, obstacles):
         player.velocity_y = -jump_force
 
+    player.jump_pressed_last_frame = space_pressed
+
     # Déplacement vertical
-    old_y = player.rect.y
     player.rect.y += player.velocity_y * dt
 
     # Collision verticale
