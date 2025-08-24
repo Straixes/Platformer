@@ -4,8 +4,8 @@ from .baseMenu import baseMenu
 
 from .Assets.assets import buttonImage,text,background
 class mainMenu(baseMenu):
-    def __init__(self, screen,menuSelect):
-        super().__init__(screen, menuSelect)
+    def __init__(self, game):
+        super().__init__(game)
         
         self.background=background("background.png")
         #boutons

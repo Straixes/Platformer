@@ -1,9 +1,8 @@
 import pygame
-
-class baseMenu:
-    def __init__(self, screen, menuSelect=None):
-        self.screen = screen
-        self.menuSelect = menuSelect
+from state import State
+class baseMenu(State):
+    def __init__(self,game):
+        super().__init__(game)
         self.buttons = []
         self.commands = [] #forme (touche,fonction associé)
         self.text=[]
@@ -12,19 +11,31 @@ class baseMenu:
         self.additionalFonction=[]
         self.background=None
 
-    def updateButtons(self,mouseClick,mouseGetClicked,mousePos):
+    def updateButtonsEvents(self,events):
+        mousePos = pygame.mouse.get_pos()
+        mouseClick = pygame.mouse.get_pressed()
+        mouseGetClicked = False
+        
+        for e in events:
+            if e.type == pygame.MOUSEBUTTONDOWN and e.button == 1:  
+                mouseGetClicked = True
         for btn in self.buttons:
-            btn.update(self.screen,mouseClick,mouseGetClicked,mousePos)
+            btn.update(mouseClick,mouseGetClicked,mousePos)
+    
+    def drawButtons(self,screen):
+        mouse_pos = pygame.mouse.get_pos()
+        for btn in self.buttons:
+            btn.draw(screen,mouse_pos)
 
-    def blitTexts(self):
+    def blitTexts(self,screen):
         for txt in self.text:
-            txt.blitText(self.screen)
+            txt.blitText(screen)
         for txt in self.multiText:
-            txt.blitText(self.screen)
+            txt.blitText(screen)
 
-    def blitImage(self):
+    def blitImage(self,screen):
         for img in self.image:
-            img.update(self.screen)
+            img.update(screen)
 
     def checkCommands(self,events):
         for event in events:
@@ -42,13 +53,18 @@ class baseMenu:
         for fn in self.additionalFonction:
             fn()   
 
-    def drawBackground(self):
-        self.background.blitBackground(self.screen)
+    def drawBackground(self,screen):
+        self.background.blitBackground(screen)
 
-    def updateMenu(self,mouseClick,mouseGetClicked,mousePos,events):
-        self.drawBackground()
-        self.updateButtons(mouseClick,mouseGetClicked,mousePos)
-        self.blitImage()
+    def update(self):
+        self.checkAdditionalFonction
+    
+    def handle_events(self, events):
         self.checkCommands(events)
-        self.checkAdditionalFonction()
-        self.blitTexts()
+        self.updateButtonsEvents(events)
+    
+    def draw(self, screen):
+        self.drawBackground(screen)
+        self.blitImage(screen)
+        self.drawButtons(screen)
+        self.blitTexts(screen)

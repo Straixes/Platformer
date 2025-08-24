@@ -47,5 +47,5 @@ class equipment():
     def draw(self,screen,slotPosX,slotPosY):
         screen.blit(self.qualitySprit,(slotPosX,slotPosY))
         screen.blit(self.sprit,(slotPosX,slotPosY))
-        ratio = self.experience/self.experienceNeedToUpgrade
+        ratio = min(1,self.experience/self.experienceNeedToUpgrade)
         pygame.draw.rect(screen, (0, 204, 203), (slotPosX,slotPosY+150,int(ratio*160),10))

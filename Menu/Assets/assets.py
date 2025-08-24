@@ -29,7 +29,7 @@ class buttonText:
     def isOnButton(self,mousePos):
         return self.buttonRect.collidepoint(mousePos)
 
-    def draw(self,mousePos,screen):
+    def draw(self,screen,mousePos):
         if self.isOnButton(mousePos):
             pygame.draw.rect(screen, self.colorPressed, self.buttonRect)
         else:
@@ -39,8 +39,7 @@ class buttonText:
         text_rect = text_surface.get_rect(center=self.buttonRect.center)
         screen.blit(text_surface, text_rect)
 
-    def update(self,screen,mouseClick,mouseGetClicked,mousePos):
-        self.draw(mousePos,screen)
+    def update(self,mouseClick,mouseGetClicked,mousePos):
         if mouseGetClicked and self.buttonRect.collidepoint(mousePos):
             self.lastTimePressed=time.time()
             self.fonction()   
@@ -93,14 +92,13 @@ class buttonImage:
             return self.mask.get_at(offset)
         return False
 
-    def draw(self,mousePos,screen):
+    def draw(self,screen,mousePos):
         if self.isOnButton(mousePos):
             screen.blit(self.imagePressed, self.buttonRect.topleft)
         else:
             screen.blit(self.image, self.buttonRect.topleft)
 
-    def update(self,screen,mouseClick,mouseGetClicked,mousePos):
-        self.draw(mousePos,screen)
+    def update(self,mouseClick,mouseGetClicked,mousePos):
         if mouseGetClicked and self.isOnButton(mousePos):
             self.lastTimePressed=time.time()
             self.fonction()   

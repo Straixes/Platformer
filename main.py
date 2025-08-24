@@ -4,27 +4,28 @@ from Menu.inventoryMenu import inventoryMenu
 import pygame
 from random import randint,choice
 pygame.init()
-pygame.display.set_mode((0,0))
+screen=pygame.display.set_mode((0,0))
 inv=inventory()
-for i in range(27):
-    inv.addEquipment(equipment("swordIcon",'sword',4,randint(0,150),choice(['forged','blessed','divine','rusted']),None,0,0,0))
-menu = inventoryMenu(pygame.display.set_mode((0,0)),inv)
+for i in range(54):
+    inv.addEquipment(equipment("swordIcon",'accessory',randint(1,150),randint(0,1500),choice(['forged','blessed','divine','rusted','enchanted']),None,0,0,0))
 
-run=True
-while run:
-    mousePos = pygame.mouse.get_pos()
-    mouseClick = pygame.mouse.get_pressed()
-    mouseGetClicked=False
+class Game:
+    def __init__(self):
+        self.state = inventoryMenu(self,inv)
+    def change_state(self, state):
+        self.state = state
+    def run(self):
+        run=True
+        while run:
+        
+            events = pygame.event.get()
+            for e in events:
+                if e.type == pygame.QUIT:
+                    run=False
+            self.state.handle_events(events)
+            self.state.update()
+            self.state.draw(screen)
+            pygame.display.flip()
 
-    events = pygame.event.get()
-    for event in events:
-        if event.type == pygame.QUIT:
-           run = False
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            if event.button == 1: 
-                mouseGetClicked=True
-
-    # Gérer et dessiner le menu 
-
-    menu.updateMenu(mouseClick,mouseGetClicked,mousePos,events)
-    pygame.display.flip()
+game=Game()
+game.run()
