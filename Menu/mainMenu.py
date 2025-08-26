@@ -1,7 +1,6 @@
 
 from .baseMenu import baseMenu 
 
-
 from .Assets.assets import buttonImage,text,background
 class mainMenu(baseMenu):
     def __init__(self, game):
@@ -16,4 +15,5 @@ class mainMenu(baseMenu):
         self.text.append(text("jouer",110,(0,0,0),(960,840)))
 
     def go_to_settings(self):
-        self.menuSelect.changeMenu("settings")
+        from .settingsMenu import settingsMenu
+        self.game.state=settingsMenu(self.game)

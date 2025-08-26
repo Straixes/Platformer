@@ -59,12 +59,14 @@ class buttonImage:
         self.sizeY=sizeY
 
         self.fonction=fonction
+        self.imageName=imageName
         imagePath = os.path.join(os.path.dirname(__file__), "textureButton", imageName)
         image=pygame.image.load(imagePath).convert_alpha()
         self.image=pygame.transform.scale(image, (self.buttonRect.width, self.buttonRect.height))
         self.initialImage=self.image
         self.mask = pygame.mask.from_surface(self.initialImage)
 
+        self.imagePressedName=imagePressedName
         imagePressedPath = os.path.join(os.path.dirname(__file__), "textureButton", imagePressedName)
         imagePressed=pygame.image.load(imagePressedPath).convert_alpha()
         self.imagePressed=pygame.transform.scale(imagePressed, (self.buttonRect.width, self.buttonRect.height))
@@ -107,6 +109,19 @@ class buttonImage:
             if actualTime - self.lastTimePressed >= self.cooldown:
                 self.lastTimePressed=actualTime
                 self.fonction()
+    def setImage(self,imageName,imagePressedName):
+        self.imageName=imageName
+        imagePath = os.path.join(os.path.dirname(__file__), "textureButton", imageName)
+        image=pygame.image.load(imagePath).convert_alpha()
+        self.image=pygame.transform.scale(image, (self.buttonRect.width, self.buttonRect.height))
+        self.initialImage=self.image
+        self.mask = pygame.mask.from_surface(self.initialImage)
+        self.imagePressedName=imagePressedName
+        imagePressedPath = os.path.join(os.path.dirname(__file__), "textureButton", imagePressedName)
+        imagePressed=pygame.image.load(imagePressedPath).convert_alpha()
+        self.imagePressed=pygame.transform.scale(imagePressed, (self.buttonRect.width, self.buttonRect.height))
+        self.initialImagePressed=self.imagePressed
+
                 
 
 
@@ -133,10 +148,10 @@ class text():
         self.size=int(coef*self.initialSize)
 
 
-class textsSettings():
+class MultiTexts():
     def __init__(self,texts,size,color,center,font=None): 
         self.texts=texts
-        self.currentTextIndex=len(texts)-1 #a changer plus tard il faut sauvegarder les parametres
+        self.currentTextIndex=0 
         self.font=font
         self.size=size
         self.initialSize=size
@@ -152,6 +167,9 @@ class textsSettings():
         coef=resolution[0]/1920
         self.center=(x*coef,y*coef)
         self.size=int(coef*self.initialSize)
+
+    def setTextTo(self,index):
+        self.currentTextIndex=index
 
     def blitText(self,screen):
         font = pygame.font.Font(self.font, self.size)

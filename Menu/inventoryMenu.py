@@ -1,5 +1,5 @@
 from state import State 
-from .Assets.assets import buttonImage,background,image
+from .Assets.assets import buttonImage,background,image,text,MultiTexts
 import pygame
 import math
 class inventoryMenu(State):
@@ -13,12 +13,19 @@ class inventoryMenu(State):
         self.background=background("inventory.png")
 
         #boutons selection type objets
+        self.texts=[text("inventory",50,(122,75,32),(465,80),"fonts/UncialAntiqua-Regular.ttf"),
+            MultiTexts(['level','quality','damage','health','armour'],30,(122,75,32),(1675,130),"fonts/UncialAntiqua-Regular.ttf")]
         self.buttons=[
             buttonImage(960, 30, 75, 125, self.setCurrentEquipmentToSword,"sword.png","swordpressed.png"),
             buttonImage(1040, 30, 75, 125, self.setCurrentEquipmentToShield,"shield.png","shieldpressed.png"),
             buttonImage(1120, 30, 75, 125, self.setCurrentEquipmentToAccessory,"accessory.png","accessorypressed.png"),
             buttonImage(1835, 160, 50, 50, self.inventory.decreaseLign,"up.png","upPressed.png"),
-            buttonImage(1835, 980, 50, 50,  self.inventory.increaseLign,"down.png","downPressed.png")]
+            buttonImage(1835, 980, 50, 50,  self.inventory.increaseLign,"down.png","downPressed.png"),
+            buttonImage(1575, 105, 200, 50,  self.changeTextSort,"zoneText.png","zoneTextPressed.png")]
+        
+        self.buttonDecroissant=buttonImage(1780, 105, 50, 50,  self.buttonDecroissantFunction,"decroissant.png","decroissantPressed.png")
+        self.buttons.append(self.buttonDecroissant)
+
         self.images= [
             image(265,305,160,160,"swordIcon.png",self.inventory.isSlotSwordEmpty),
             image(265,530,160,160,"shieldIcon.png",self.inventory.isSlotShieldEmpty),
@@ -30,6 +37,8 @@ class inventoryMenu(State):
             image(960, 30, 75, 125,"swordpressed.png",self.isCurrentEquipmentSword),
             image(1040, 30, 75, 125,"shieldpressed.png",self.isCurrentEquipmentShield),
             image(1120, 30, 75, 125,"accessorypressed.png",self.isCurrentEquipmentAccessory)]
+        
+        self.font= pygame.font.Font("fonts/UncialAntiqua-Regular.ttf", 48)
         self.dictPosSlot={
             "sword": (265,305),
             "shield": (265,530),
@@ -45,6 +54,14 @@ class inventoryMenu(State):
         self.rectSlotAccessory2=pygame.Rect(505,525,170,170)
         self.rectSlotAccessory3=pygame.Rect(505,750,170,170)
 
+    def changeTextSort(self):
+        self.texts[1].nextText()
+        funDict={'level' : lambda x : x.level,
+                 'quality':lambda x : x.qualitySort,
+                 'damage':lambda x : x.damageBoost,
+                 'health':lambda x : x.healthBoost,
+                 'armour':lambda x : x.armourBoost}
+        self.inventory.sortEquipment(self.inventory.lastSortSlot,funDict[self.texts[1].getCurrentText()],self.inventory.lastSortOrder)
     def isCurrentEquipmentSword(self):
         return self.currentEquipment=='sword'
     def isCurrentEquipmentShield(self):
@@ -53,14 +70,25 @@ class inventoryMenu(State):
         return self.currentEquipment=='accessory'
     
     def setCurrentEquipmentToSword(self):
+        self.texts[1].setTextTo(0)
         self.inventory.sortEquipment("sword",lambda x : x.level,True)
         self.currentEquipment="sword"
     def setCurrentEquipmentToShield(self):
+        self.texts[1].setTextTo(0)
         self.inventory.sortEquipment("shield",lambda x : x.level,True)
         self.currentEquipment="shield"
     def setCurrentEquipmentToAccessory(self):
+        self.texts[1].setTextTo(0)
         self.inventory.sortEquipment("accessory",lambda x : x.level,True)
         self.currentEquipment="accessory"
+    def buttonDecroissantFunction(self):
+        self.inventory.sortEquipment(self.inventory.lastSortSlot,self.inventory.lastSortFunction,not(self.inventory.lastSortOrder))
+        button=self.buttonDecroissant
+        if button.imageName=="decroissant.png":
+            button.setImage("croissant.png","croissantPressed.png")
+        else:
+            button.setImage("decroissant.png","decroissantPressed.png")
+
     #######DRAW#######
     def drawEquipments(self,screen):
             lenList=len(self.inventory.currentDrawlist)
@@ -81,7 +109,9 @@ class inventoryMenu(State):
             if equipment !=None:
                 x,y=self.dictPosSlot[key]
                 equipment.draw(screen,x,y)
-
+    def blitTexts(self,screen):
+        for txt in self.texts:
+            txt.blitText(screen)
     def draw_blinking_border(self, screen, rect, base_color=(255, 255, 255), thickness=4, speed=0.0025):
         time = pygame.time.get_ticks()
         alpha = (math.sin(time * speed) +2) / 4  # oscillation entre 0 et 1
@@ -98,6 +128,7 @@ class inventoryMenu(State):
         self.blitImage(screen)
         self.drawEquipments(screen)
         self.drawEquipedEquipments(screen)
+        self.blitTexts(screen)
 
         if self.selectingAccessory:
             self.draw_blinking_border(screen, self.rectSlotAccessory1)

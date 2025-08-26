@@ -1,15 +1,14 @@
 import pygame
 from .baseMenu import baseMenu 
 
-
-from .Assets.assets import buttonImage,textsSettings,text,background
+from .Assets.assets import buttonImage,MultiTexts,text,background
 
 class settingsMenu(baseMenu):
     def __init__(self, game):
         super().__init__(game)
         #Textchangeable
-        self.multiText=[textsSettings(["1280 x 720","1366 x 768","1600 x 900"," 1920 x 1080 "],50,(0,0,0),(1300,200)),
-                        textsSettings(["fenetré","plein ecran"],50,(0,0,0),(1300,275))]
+        self.multiText=[MultiTexts([" 1920 x 1080 ","1600 x 900","1366 x 768""1280 x 720"],50,(0,0,0),(1300,200)),
+                        MultiTexts(["plein ecran","fenetré"],50,(0,0,0),(1300,275))]
         
 
         self.background=background("background.png")
@@ -37,7 +36,8 @@ class settingsMenu(baseMenu):
 
     #fonction pour
     def go_to_main(self):
-        self.menuSelect.changeMenu("main")
+        from Menu.mainMenu import mainMenu
+        self.game.state=mainMenu(self.game)
 
     def validChange(self):
         dictResolution={"1280 x 720" : (1280,720),"1366 x 768": (1366,768),"1600 x 900": (1600,900)," 1920 x 1080 ": (1920,1080)}
