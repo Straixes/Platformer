@@ -1,12 +1,28 @@
+from inventory.inventory import inventory
+from inventory.equipment import equipment
+from Menu.mainMenu import mainMenu
 import pygame
-from settings import SCREEN_WIDTH, SCREEN_HEIGHT
-from game import Game
 
 pygame.init()
-screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-pygame.display.set_caption("Plateformer Pygame")
+screen=pygame.display.set_mode((0,0))
 
-game = Game(screen)
+class Game:
+    def __init__(self):
+        self.state = mainMenu(self)
+    def change_state(self, state):
+        self.state = state
+    def run(self):
+        run=True
+        while run:
+        
+            events = pygame.event.get()
+            for e in events:
+                if e.type == pygame.QUIT:
+                    run=False
+            self.state.handle_events(events)
+            self.state.update()
+            self.state.draw(screen)
+            pygame.display.flip()
+
+game=Game()
 game.run()
-
-pygame.quit()
