@@ -1,6 +1,7 @@
 import pygame
 from entities.Player import Player
 from entities.Obstacle import Obstacle
+from entities.plateform import Plateform
 from utils.physics import move_player
 import settings
 
@@ -27,9 +28,10 @@ class Game:
     def create_obstacles(self):
         obs1 = Obstacle(64, 64, "obstacleTest", 360, settings.GROUND_Y - 64)
         obs2 = Obstacle(64, 64, "obstacleTest", 500, settings.GROUND_Y - 128)
-        obs3 = Obstacle(64, 64, "obstacleTest", 800, settings.GROUND_Y - 148)
-        self.obstacles.add(obs1, obs2, obs3)
-
+        plateform = Plateform(32, 4, "plateform", 700, settings.GROUND_Y - 64, 2)
+        self.obstacles.add(obs1, obs2, plateform)
+        plateform.isMoving = True
+        plateform.distanceMoving = 100
     def handle_events(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -38,6 +40,10 @@ class Game:
     def update(self, dt, keys):
         move_player(self.player, keys, dt, settings.PLAYER_SPEED, settings.GRAVITY, settings.JUMP_FORCE, settings.GROUND_Y, self.obstacles)
         self.player.update_state(keys)
+
+        for obs in self.obstacles:
+            if hasattr(obs, "update"):  # seulement si l'objet a une méthode update
+                obs.update()
 
     def draw(self):
         self.screen.fill("gray")

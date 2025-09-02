@@ -6,7 +6,13 @@ class Obstacle(pygame.sprite.Sprite):
         super().__init__()
         self.width = width
         self.height = height
-        self.texture = pygame.image.load(os.path.join("img", f"{sprite_name}.png")).convert_alpha()
+
+        # Chargement et redimensionnement de l'image
+        texture_path = os.path.join("img", f"{sprite_name}.png")
+        self.texture = pygame.image.load(texture_path).convert_alpha()
+        self.texture = pygame.transform.scale(self.texture, (self.width, self.height))
+
+        # Rectangle et masque de collision
         self.rect = self.texture.get_rect(topleft=(x, y))
         self.mask = pygame.mask.from_surface(self.texture)
 
