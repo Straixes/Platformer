@@ -1,9 +1,8 @@
 import pygame
-from entities.Player import Player
-from entities.Obstacle import Obstacle
-from entities.plateform import Plateform
-from utils.physics import move_player
+from entities import Player, Obstacle, Plateform
+from utils import move_player
 import settings
+
 
 class Game:
     def __init__(self, screen):
@@ -13,7 +12,10 @@ class Game:
 
         # Groupes
         self.obstacles = pygame.sprite.Group()
+        self.plateforms = pygame.sprite.Group()
         self.player_group = pygame.sprite.Group()
+
+        self.allDiffObstacles = pygame.sprite.Group()
 
         # Joueur
         self.player = Player("Quentin", 100, "sprite", settings.PLAYER_WIDTH, settings.PLAYER_HEIGHT, 200, settings.GROUND_Y - settings.PLAYER_HEIGHT, 1, screen)
@@ -22,26 +24,36 @@ class Game:
         # Obstacles
         self.create_obstacles()
 
+        #Plateform
+        self.createPlateform()
+
         # Font FPS
         self.font = pygame.font.SysFont("Arial", 24)
 
     def create_obstacles(self):
         obs1 = Obstacle(64, 64, "obstacleTest", 360, settings.GROUND_Y - 64)
         obs2 = Obstacle(64, 64, "obstacleTest", 500, settings.GROUND_Y - 128)
-        plateform = Plateform(32, 4, "plateform", 700, settings.GROUND_Y - 64, 2)
-        self.obstacles.add(obs1, obs2, plateform)
+        self.obstacles.add(obs1, obs2)
+        self.allDiffObstacles.add(obs1, obs2)
+
+
+    def createPlateform(self):
+        plateform = Plateform(32, 4, "plateform", 700, settings.GROUND_Y - 64, 2, self)
         plateform.isMoving = True
-        plateform.distanceMoving = 100
+        plateform.distanceMoving = 125
+        self.plateforms.add(plateform)
+        self.allDiffObstacles.add(plateform)
+
     def handle_events(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.running = False
 
     def update(self, dt, keys):
-        move_player(self.player, keys, dt, settings.PLAYER_SPEED, settings.GRAVITY, settings.JUMP_FORCE, settings.GROUND_Y, self.obstacles)
+        move_player(self.player, keys, dt, settings.PLAYER_SPEED, settings.GRAVITY, settings.JUMP_FORCE, settings.GROUND_Y, self.allDiffObstacles)
         self.player.update_state(keys)
 
-        for obs in self.obstacles:
+        for obs in self.allDiffObstacles:
             if hasattr(obs, "update"):  # seulement si l'objet a une méthode update
                 obs.update()
 
@@ -59,6 +71,10 @@ class Game:
         for obs in self.obstacles:
             obs.draw(self.screen)
 
+        #Plateforms
+        for p in self.plateforms:
+            p.draw(self.screen)
+
         # FPS
         fps_text = self.font.render(f"FPS: {int(self.clock.get_fps())}", True, pygame.Color("white"))
         self.screen.blit(fps_text, (10, 10))
@@ -72,3 +88,6 @@ class Game:
             self.handle_events()
             self.update(dt, keys)
             self.draw()
+
+    def getListOfpLayer(self):
+        return self.player_group.sprites()
