@@ -1,5 +1,6 @@
 import pygame
 import os
+from Menu.Assets.assets import text
 class equipment():
     def __init__(self,name,slot,level,experience,quality,effect,damageBoost,armourBoost,healthBoost):
         self.name=name
@@ -45,7 +46,10 @@ class equipment():
             self.healthBoost=self.healthBoost*self.qualityUpgradeStatBoost+1
 
     def draw(self,screen,slotPosX,slotPosY):
+        textLevel=text(str(self.level),35,(0, 0, 0),(slotPosX+25,slotPosY+25),"UncialAntiqua-Regular.ttf")
+
         screen.blit(self.qualitySprit,(slotPosX,slotPosY))
         screen.blit(self.sprit,(slotPosX,slotPosY))
         ratio = min(1,self.experience/self.experienceNeedToUpgrade)
+        textLevel.blitText(screen)
         pygame.draw.rect(screen, (0, 204, 203), (slotPosX,slotPosY+150,int(ratio*160),10))

@@ -13,8 +13,8 @@ class inventoryMenu(State):
         self.background=background("inventory.png")
 
         #boutons selection type objets
-        self.texts=[text("inventory",50,(122,75,32),(465,80),"fonts/UncialAntiqua-Regular.ttf"),
-            MultiTexts(['level','quality','damage','health','armour'],30,(122,75,32),(1675,130),"fonts/UncialAntiqua-Regular.ttf")]
+        self.texts=[text("inventory",50,(122,75,32),(465,80),"UncialAntiqua-Regular.ttf"),
+            MultiTexts(['level','quality','damage','health','armour'],30,(122,75,32),(1675,130),"UncialAntiqua-Regular.ttf")]
         self.buttons=[
             buttonImage(960, 30, 75, 125, self.setCurrentEquipmentToSword,"sword.png","swordpressed.png"),
             buttonImage(1040, 30, 75, 125, self.setCurrentEquipmentToShield,"shield.png","shieldpressed.png"),
@@ -38,7 +38,6 @@ class inventoryMenu(State):
             image(1040, 30, 75, 125,"shieldpressed.png",self.isCurrentEquipmentShield),
             image(1120, 30, 75, 125,"accessorypressed.png",self.isCurrentEquipmentAccessory)]
         
-        self.font= pygame.font.Font("fonts/UncialAntiqua-Regular.ttf", 48)
         self.dictPosSlot={
             "sword": (265,305),
             "shield": (265,530),

@@ -126,9 +126,12 @@ class buttonImage:
 
 
 class text():
-    def __init__(self,text,size,color,center,font=None): 
+    def __init__(self,text,size,color,center,fontName=None): 
         self.text=text
-        self.font=font
+        if fontName!=None:
+            self.font = os.path.join("Menu", "Assets", "fonts", fontName)
+        else:
+            self.font=None
         self.size=size
         self.initialSize=size
         self.color=color
@@ -149,10 +152,13 @@ class text():
 
 
 class MultiTexts():
-    def __init__(self,texts,size,color,center,font=None): 
+    def __init__(self,texts,size,color,center,fontName=None): 
         self.texts=texts
         self.currentTextIndex=0 
-        self.font=font
+        if fontName!=None:
+            self.font = os.path.join("Menu", "Assets", "fonts", fontName)
+        else:
+            self.font=None
         self.size=size
         self.initialSize=size
         self.color=color
