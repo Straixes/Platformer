@@ -18,7 +18,8 @@ class inventoryMenu(State):
         self.buttons=[
             buttonImage(960, 30, 75, 125, self.setCurrentEquipmentToSword,"sword.png","swordpressed.png"),
             buttonImage(1040, 30, 75, 125, self.setCurrentEquipmentToShield,"shield.png","shieldpressed.png"),
-            buttonImage(1120, 30, 75, 125, self.setCurrentEquipmentToAccessory,"accessory.png","accessorypressed.png"),
+            buttonImage(1120, 30, 75, 125, self.setCurrentEquipmentToPet,"pet.png","petpressed.png"),
+            buttonImage(1200, 30, 75, 125, self.setCurrentEquipmentToAccessory,"accessory.png","accessorypressed.png"),
             buttonImage(1835, 160, 50, 50, self.inventory.decreaseLign,"up.png","upPressed.png"),
             buttonImage(1835, 980, 50, 50,  self.inventory.increaseLign,"down.png","downPressed.png"),
             buttonImage(1575, 105, 200, 50,  self.changeTextSort,"zoneText.png","zoneTextPressed.png")]
@@ -29,18 +30,21 @@ class inventoryMenu(State):
         self.images= [
             image(265,305,160,160,"swordIcon.png",self.inventory.isSlotSwordEmpty),
             image(265,530,160,160,"shieldIcon.png",self.inventory.isSlotShieldEmpty),
-            image(265,755,160,160,"swordIcon.png",self.inventory.isSlotSwordEmpty),
+            image(265,755,160,160,"petIcon.png",self.inventory.isSlotPetEmpty),
             image(510,305,160,160,"accessoryIcon.png",self.inventory.isSlotAccessory1Empty),
             image(510,530,160,160,"accessoryIcon.png",self.inventory.isSlotAccessory2Empty),
             image(510,755,160,160,"accessoryIcon.png",self.inventory.isSlotAccessory3Empty),
 
             image(960, 30, 75, 125,"swordpressed.png",self.isCurrentEquipmentSword),
             image(1040, 30, 75, 125,"shieldpressed.png",self.isCurrentEquipmentShield),
-            image(1120, 30, 75, 125,"accessorypressed.png",self.isCurrentEquipmentAccessory)]
+            image(1120, 30, 75, 125,"petpressed.png",self.isCurrentEquipmentPet),
+            image(1200, 30, 75, 125,"accessorypressed.png",self.isCurrentEquipmentAccessory)
+        ]
         
         self.dictPosSlot={
             "sword": (265,305),
             "shield": (265,530),
+            "pet": (265,305),
             "accessory1": (510,305),
             "accessory2": (510,530),
             "accessory3": (510,755)
@@ -49,6 +53,9 @@ class inventoryMenu(State):
         self.selectingAccessory=False
         self.selectedEquipment=None
 
+        self.rectSlotSword=pygame.Rect(260,300,170,170)
+        self.rectSlotShield=pygame.Rect(260,525,170,170)
+        self.rectSlotPet=pygame.Rect(260,750,170,170)
         self.rectSlotAccessory1=pygame.Rect(505,300,170,170)
         self.rectSlotAccessory2=pygame.Rect(505,525,170,170)
         self.rectSlotAccessory3=pygame.Rect(505,750,170,170)
@@ -65,6 +72,8 @@ class inventoryMenu(State):
         return self.currentEquipment=='sword'
     def isCurrentEquipmentShield(self):
         return self.currentEquipment=='shield'
+    def isCurrentEquipmentPet(self):
+        return self.currentEquipment=='pet'
     def isCurrentEquipmentAccessory(self):
         return self.currentEquipment=='accessory'
     
@@ -76,6 +85,9 @@ class inventoryMenu(State):
         self.texts[1].setTextTo(0)
         self.inventory.sortEquipment("shield",lambda x : x.level,True)
         self.currentEquipment="shield"
+    def setCurrentEquipmentToPet(self):
+        self.texts[1].setTextTo(0)
+        self.inventory.sortEquipment("pet",lambda x : x.level,True)
     def setCurrentEquipmentToAccessory(self):
         self.texts[1].setTextTo(0)
         self.inventory.sortEquipment("accessory",lambda x : x.level,True)
@@ -177,6 +189,11 @@ class inventoryMenu(State):
                                     self.inventory.equipEquipment(equipment)
                                 else:
                                     self.inventory.switchEquipment(equipment,'shield')
+                            elif equipment.slot=='pet':
+                                if self.inventory.existSlotForEquipment(equipment):
+                                    self.inventory.equipEquipment(equipment)
+                                else:
+                                    self.inventory.switchEquipment(equipment,'pet')
                             elif equipment.slot=='accessory':
                                 if self.inventory.existSlotForEquipment(equipment):
                                     self.inventory.equipEquipment(equipment)
@@ -196,6 +213,23 @@ class inventoryMenu(State):
                     elif self.rectSlotAccessory3.collidepoint(mousePos):
                         self.inventory.switchEquipment(self.selectedEquipment,'accessory3')
                     self.selectingAccessory=False
+    def unequipEquipment(self,events):
+        mousePos = pygame.mouse.get_pos()
+        for event in events:
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    if self.rectSlotSword.collidepoint(mousePos):
+                        self.inventory.unequipEquipment('sword')
+                    elif self.rectSlotShield.collidepoint(mousePos):
+                        self.inventory.unequipEquipment('shield')
+                    elif self.rectSlotPet.collidepoint(mousePos):
+                        self.inventory.unequipEquipment('pet')
+                    elif self.rectSlotAccessory1.collidepoint(mousePos):
+                        self.inventory.unequipEquipment('accessory1')
+                    elif self.rectSlotAccessory2.collidepoint(mousePos):
+                        self.inventory.unequipEquipment('accessory2')
+                    elif self.rectSlotAccessory3.collidepoint(mousePos):
+                        self.inventory.unequipEquipment('accessory3')
                                     
 
 
@@ -211,5 +245,6 @@ class inventoryMenu(State):
         else:
             self.scrollInventory(events)
             self.updateButtonsEvents(events)
+            self.unequipEquipment(events)
             self.buttonEquipment(events)
 

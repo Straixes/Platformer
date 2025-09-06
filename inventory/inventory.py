@@ -8,6 +8,7 @@ class inventory():
         self.dictSlot={
             "sword": None,
             "shield": None,
+            "pet":None,
             "accessory1": None,
             "accessory2": None,
             "accessory3": None
@@ -59,6 +60,9 @@ class inventory():
     def isSlotShieldEmpty(self):
         return self.dictSlot['shield']==None
     
+    def isSlotPetEmpty(self):
+        return self.dictSlot['pet']==None
+    
     def isSlotAccessory1Empty(self):
         return self.dictSlot['accessory1']==None
     
@@ -74,6 +78,7 @@ class inventory():
     def existSlotForEquipment(self,equipment):
         dictSlot={'sword' : self.isSlotSwordEmpty,
                   'shield': self.isSlotShieldEmpty,
+                  'pet': self.isSlotPetEmpty,
                   'accessory': self.isOneAccessorySlotEmpty}
         return dictSlot[equipment.slot]()
     
@@ -81,9 +86,11 @@ class inventory():
         if self.existSlotForEquipment(equipment):
             if equipment.slot=='sword':
                 self.dictSlot['sword']=equipment
-            if equipment.slot=='shield':
+            elif equipment.slot=='shield':
                 self.dictSlot['shield']=equipment
-            if equipment.slot=='accessory':
+            elif equipment.slot=='pet':
+                self.dictSlot['pet']=equipment
+            elif equipment.slot=='accessory':
                 if self.isSlotAccessory1Empty():
                     self.dictSlot['accessory1']=equipment
                 elif self.isSlotAccessory2Empty():
