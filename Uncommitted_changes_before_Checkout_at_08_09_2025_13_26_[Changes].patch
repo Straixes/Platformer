@@ -1,0 +1,75 @@
+Subject: [PATCH] Uncommitted changes before Checkout at 08/09/2025 13:26 [Changes]
+---
+Index: game/core.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/game/core.py b/game/core.py
+--- a/game/core.py	(revision 0e5654d675bf4f73f026bcd6d993b796af9aad93)
++++ b/game/core.py	(date 1757330706034)
+@@ -27,6 +27,15 @@
+         #Plateform
+         self.createPlateform()
+ 
++        #Fond
++        """
++        self.coordBackground = (0, 0)
++        self.background = pygame.image.load("img/fond/fond.jpg").convert()
++        self.background = pygame.transform.scale(
++            self.background,
++            (settings.SCREEN_WIDTH, settings.SCREEN_HEIGHT)
++        )
++"""
+         # Font FPS
+         self.font = pygame.font.SysFont("Arial", 24)
+ 
+@@ -58,8 +67,12 @@
+                 obs.update()
+ 
+     def draw(self):
+-        self.screen.fill("gray")
+-
++        #self.screen.fill("gray")
++        """
++        self.screen.blit(self.background, self.coordBackground)
++        self.screen.blit(self.background,
++                         (self.coordBackground[0] + self.background.get_width(), self.coordBackground[1]))
++                         """
+         # Sol
+         pygame.draw.line(self.screen, "white", (0, settings.GROUND_Y), (settings.SCREEN_WIDTH, settings.GROUND_Y), 5)
+ 
+@@ -81,13 +94,32 @@
+ 
+         pygame.display.flip()
+ 
++    def deffilerFond(self, vitesse):
++        x, y = self.coordBackground
++        x -= vitesse
++
++        # si l'image est totalement sortie de l'écran, on la remet à 0
++        if x <= -self.background.get_width():
++            x = 0
++        elif x >= self.background.get_width():
++            x = 0
++
++        self.coordBackground = (x, y)
++
+     def run(self):
+         while self.running:
++            self.screen.fill((128, 128, 128))
+             dt = self.clock.tick(settings.FPS) / 1000
+             keys = pygame.key.get_pressed()
+             self.handle_events()
+             self.update(dt, keys)
+             self.draw()
++            """
++            if self.player.state == "forward":
++                self.deffilerFond(settings.PLAYER_SPEED*settings.PLAYER_PARALAX_EFFECT)
++            elif self.player.state == "backward":
++                self.deffilerFond(-settings.PLAYER_SPEED*settings.PLAYER_PARALAX_EFFECT)
++            """
+ 
+     def getListOfpLayer(self):
+         return self.player_group.sprites()
+\ No newline at end of file
