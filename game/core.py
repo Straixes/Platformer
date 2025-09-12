@@ -40,14 +40,14 @@ class Game:
         self.font = pygame.font.SysFont("Arial", 24)
 
     def create_obstacles(self):
-        obs1 = Obstacle(64, 64, "obstacleTest", 360, settings.GROUND_Y - 64)
-        obs2 = Obstacle(64, 64, "obstacleTest", 500, settings.GROUND_Y - 128)
+        obs1 = Obstacle( "obstacleTest", 360, settings.GROUND_Y - 64)
+        obs2 = Obstacle( "obstacleTest", 500, settings.GROUND_Y - 128)
         self.obstacles.add(obs1, obs2)
         self.allDiffObstacles.add(obs1, obs2)
 
 
     def createPlateform(self):
-        plateform = Plateform(32, 4, "plateform", 700, settings.GROUND_Y - 64, 2, self)
+        plateform = Plateform("plateform", 700, settings.GROUND_Y - 64, 2, self)
         plateform.isMoving = True
         plateform.distanceMoving = 125
         self.plateforms.add(plateform)
@@ -67,14 +67,14 @@ class Game:
                 obs.update()
 
     def draw(self):
-        #self.screen.fill("gray")
+        self.screen.fill("gray")
         """
         self.screen.blit(self.background, self.coordBackground)
         self.screen.blit(self.background,
                          (self.coordBackground[0] + self.background.get_width(), self.coordBackground[1]))
                          """
         # Sol
-        pygame.draw.line(self.screen, "white", (0, settings.GROUND_Y), (settings.SCREEN_WIDTH, settings.GROUND_Y), 5)
+        pygame.draw.line(self.screen, "white", (0, settings.GROUND_Y), (settings.SCREEN_WIDTH, settings.GROUND_Y), settings.GROUND_HEIGHT)
 
         # Joueur
         self.player.draw()
@@ -108,7 +108,6 @@ class Game:
 
     def run(self):
         while self.running:
-            self.screen.fill((128, 128, 128))
             dt = self.clock.tick(settings.FPS) / 1000
             keys = pygame.key.get_pressed()
             self.handle_events()

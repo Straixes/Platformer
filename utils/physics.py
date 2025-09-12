@@ -1,21 +1,20 @@
 import pygame
+
+import settings
 from entities import Plateform
 
-def is_on_ground_or_obstacle(player, ground_y, obstacles, margin=5):
+def is_on_ground_or_obstacle(player, ground_y, obstacles, margin=0):
     if player.rect.bottom >= ground_y - margin:
         return True
 
     for obs in obstacles:
-        if player.rect.right > obs.rect.left or player.rect.left < obs.rect.right:
+        if player.rect.right >= obs.rect.left or player.rect.left <= obs.rect.right:
             if 0 <= player.rect.bottom - obs.rect.top <= margin:
                 return True
     return False
 
 
 def move_player(player, keys, dt, speed, gravity, jump_force, ground_y, obstacles):
-    # Limites horizontales
-    player.rect.x = max(0, min(player.rect.x, 1280 - player.width))
-
     # Déplacement horizontal
     old_x = player.rect.x
     if keys[pygame.K_q]:
@@ -25,8 +24,6 @@ def move_player(player, keys, dt, speed, gravity, jump_force, ground_y, obstacle
 
     # Collision horizontale
     hits = pygame.sprite.spritecollide(player, obstacles, False, pygame.sprite.collide_mask)
-    if hits:
-        player.rect.x = old_x
 
     # Gravité
     player.velocity_y += gravity * dt
@@ -44,7 +41,7 @@ def move_player(player, keys, dt, speed, gravity, jump_force, ground_y, obstacle
 
     for obs in hits:
         # --- Joueur tombe sur un obstacle ---
-        if player.velocity_y > 0 and player.rect.bottom <= obs.rect.top + 10:
+        if player.velocity_y > 0 and player.rect.bottom <= obs.rect.top + obs.rect.width/5:
             player.rect.bottom = obs.rect.top
             player.velocity_y = 0
 
@@ -53,7 +50,7 @@ def move_player(player, keys, dt, speed, gravity, jump_force, ground_y, obstacle
                 player.rect.x += obs.velocity * obs.direction
 
         # --- Joueur cogne par dessous ---
-        elif player.velocity_y < 0 and player.rect.top >= obs.rect.bottom - 10:
+        elif player.velocity_y < 0 and player.rect.top >= obs.rect.bottom - obs.rect.width/5:
             player.rect.top = obs.rect.bottom
             player.velocity_y = 0
 
@@ -70,7 +67,7 @@ def move_player(player, keys, dt, speed, gravity, jump_force, ground_y, obstacle
                 player.rect.left = obs.rect.right
 
     # Collision avec le sol
-    if player.rect.bottom >= ground_y:
+    if player.rect.bottom > ground_y:
         player.rect.bottom = ground_y
         player.velocity_y = 0
 
