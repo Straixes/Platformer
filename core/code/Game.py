@@ -1,7 +1,7 @@
 import pygame
 import sys
 import pymunk
-from core.code.Player import Player
+from core.code.Entities.Player import Player
 from core.code.Level import Level
 from core.code.Camera import CameraGroup
 
@@ -12,18 +12,22 @@ class Game:
         pygame.init()
         self.screen = pygame.display.set_mode((1280, 720))
         self.clock = pygame.time.Clock()
+        self.font = pygame.font.SysFont("Arial", 24)
 
         self.space = pymunk.Space()
-        self.space.gravity = (0, 500)
+        self.space.gravity = (0, 981)
 
         # groupes
         self.camera_group = CameraGroup()
 
-        # joueur
-        self.player = Player((40, 360), self.camera_group)
-
         # niveau
-        self.level = Level(self.screen, self.player, self.camera_group, self.space)
+        self.level = Level(self.screen, self.camera_group, self.space)
+
+        # joueur
+        self.player = Player(self.level.spawnPoint, self.camera_group, self.space)
+
+        self.level.setPlayer(player=self.player)
+
 
     def run(self):
         while True:
@@ -42,7 +46,8 @@ class Game:
             # update et draw
             self.camera_group.update()
             self.camera_group.customDraw(self.player)
-            self.level.drawShapes()
+
+            self.screen.blit(self.font.render(f"FPS: {int(self.clock.get_fps())}", True, pygame.Color("white")), (10, 10))
 
             pygame.display.update()
             self.clock.tick(60)
