@@ -1,26 +1,19 @@
-import pygame
-from baseMenu import baseMenu 
-import os
 
-from assets import buttonImage,text,background
+from .baseMenu import baseMenu 
+
+from .Assets.assets import buttonImage,text,background
 class mainMenu(baseMenu):
-    def __init__(self, screen,menuSelect):
-        super().__init__(screen, menuSelect)
+    def __init__(self, game):
+        super().__init__(game)
         
-        defaultBackgroudPath = os.path.join(os.path.dirname(__file__), "textureBackground", "background.png")
-        self.background=background(pygame.image.load(defaultBackgroudPath).convert_alpha())
+        self.background=background("background.png")
         #boutons
-        image_path = os.path.join(os.path.dirname(__file__), "textureButton", "settings.png")
-        image=pygame.image.load(image_path).convert_alpha()
-        self.buttons.append(buttonImage(1840, 30, 50, 50, self.go_to_settings,image,image))
-        image_path = os.path.join(os.path.dirname(__file__), "textureButton", "play.png")
-        image=pygame.image.load(image_path).convert_alpha()
-        imagep_path = os.path.join(os.path.dirname(__file__), "textureButton", "playButtonPressed.png")
-        imagep=pygame.image.load(imagep_path).convert_alpha()
-        self.buttons.append(buttonImage(560, 780, 800, 120, self.go_to_settings,image,imagep))
+        self.buttons.append(buttonImage(1840, 30, 50, 50, self.go_to_settings,"settings.png","settings.png"))
+        self.buttons.append(buttonImage(560, 780, 800, 120, self.go_to_settings,"play.png","playButtonPressed.png"))
 
 
         self.text.append(text("jouer",110,(0,0,0),(960,840)))
 
     def go_to_settings(self):
-        self.menuSelect.changeMenu("settings")
+        from .settingsMenu import settingsMenu
+        self.game.state=settingsMenu(self.game)
