@@ -1,13 +1,13 @@
 import pygame
-from .baseMenu import baseMenu 
+from ..baseMenu import baseMenu 
 
-from .Assets.assets import buttonImage,MultiTexts,text,background
+from ..Assets.assets import buttonImage,MultiTexts,text,background
 
 class settingsMenu(baseMenu):
     def __init__(self, game):
         super().__init__(game)
         #Textchangeable
-        self.multiText=[MultiTexts([" 1920 x 1080 ","1600 x 900","1366 x 768""1280 x 720"],50,(0,0,0),(1300,200)),
+        self.multiText=[MultiTexts([" 1920 x 1080 ","1600 x 900","1366 x 768","1280 x 720"],50,(0,0,0),(1300,200)),
                         MultiTexts(["plein ecran","fenetré"],50,(0,0,0),(1300,275))]
         
 

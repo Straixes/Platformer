@@ -15,5 +15,5 @@ class mainMenu(baseMenu):
         self.text.append(text("jouer",110,(0,0,0),(960,840)))
 
     def go_to_settings(self):
-        from .settingsMenu import settingsMenu
+        from .settingsMenu.settingsMenu import settingsMenu
         self.game.state=settingsMenu(self.game)

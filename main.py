@@ -1,11 +1,11 @@
-from inventory.inventory import inventory
-from inventory.equipment import equipment
+
 from Menu.mainMenu import mainMenu
 import pygame
-
+from Menu.settingsMenu.settings import loadSettings
 pygame.init()
 screen=pygame.display.set_mode((0,0))
 
+settings=loadSettings()
 class Game:
     def __init__(self):
         self.state = mainMenu(self)
