@@ -1,16 +1,14 @@
-from inventory.inventory import inventory
-from inventory.equipment import equipment
-from Menu.inventoryMenu import inventoryMenu
-import pygame
 
+from Menu.mainMenu import mainMenu
+import pygame
+from Menu.settingsMenu.settings import loadSettings
 pygame.init()
 screen=pygame.display.set_mode((0,0))
-inv=inventory()
 
-inv.addEquipment(equipment('swordIcon','sword',1,250,'divine',None,1,1,1))
+settings=loadSettings()
 class Game:
     def __init__(self):
-        self.state = inventoryMenu(self,inv)
+        self.state = mainMenu(self)
     def change_state(self, state):
         self.state = state
     def run(self):

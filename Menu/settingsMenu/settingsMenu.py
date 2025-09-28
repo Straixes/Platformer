@@ -1,7 +1,7 @@
 import pygame
-from .baseMenu import baseMenu 
+from ..baseMenu import baseMenu 
 
-from .Assets.assets import buttonImage,MultiTexts,text,background
+from ..Assets.assets import buttonImage,MultiTexts,text,background
 
 class settingsMenu(baseMenu):
     def __init__(self, game):
