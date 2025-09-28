@@ -12,15 +12,25 @@ class Level:
         self.tmxData = load_pygame(os.path.abspath(self.tmx_path))
         self.group = group
         self.spawnPoint = (0, 0)
+        self.pnjDict = {}
 
         self.space = space
 
         self.takeAllLayers()
-        self.test()
+        self.takeAllObjects()
         self.shapes()
 
     def setPlayer(self, player):
         self.player = player
+
+    def addPnj(self, pnj):
+        self.pnjDict[pnj.name] = [pnj, pnj.pos, (pnj.x, pnj.y)]
+        for obj in self.tmxData.objects:
+            if obj.type == 'PnjMarker':
+                self.pnjDict[obj.name][1] = (obj.x, obj.y)
+                self.pnjDict[obj.name][0].setPos((obj.x, obj.y))
+            if obj.type == 'pnjDetectDialog':
+                 self.pnjDict[obj.name][2] = (obj.x, obj.y)
 
     def takeAllLayers(self):
         for layer in self.tmxData.layers:
@@ -30,7 +40,7 @@ class Level:
                     Tile(pos, surf, self.group, self.space)
 
 
-    def test(self):
+    def takeAllObjects(self):
         for obj in self.tmxData.objects:
             pos = obj.x, obj.y
             if obj.type in ('Building', 'Vegetation'):
@@ -38,10 +48,8 @@ class Level:
 
     def shapes(self):
         for obj in self.tmxData.objects:
-            print(obj.type , obj.name)
-            if obj.type == 'Marker' and obj.name == 'SpawnPoint':
-                print(self.spawnPoint)
-                self.spawnPoint = (obj.x, obj.y)
-                print(self.spawnPoint)
+            if obj.type == 'Marker':
+                if obj.name == 'SpawnPoint':
+                    self.spawnPoint = (obj.x, obj.y)
 
 

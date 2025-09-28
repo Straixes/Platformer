@@ -4,7 +4,7 @@ import pymunk
 from core.code.Entities.Player import Player
 from core.code.Level import Level
 from core.code.Camera import CameraGroup
-
+from core.code.Entities.Pnj import Pnj
 
 
 class Game:
@@ -25,6 +25,10 @@ class Game:
 
         # joueur
         self.player = Player(self.level.spawnPoint, self.camera_group, self.space)
+
+        # Pnj
+        self.pnj1 = Pnj(self.screen, self.camera_group, 'testPnj')
+        self.level.addPnj(self.pnj1)
 
         self.level.setPlayer(player=self.player)
 

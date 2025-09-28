@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="128" height="32" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="8">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="128" height="32" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="10">
  <tileset firstgid="1" source="../tsx/Terrain.tsx"/>
  <layer id="1" name="Calque de Tuiles 1" width="128" height="32">
   <data encoding="csv">
@@ -41,5 +41,9 @@
   <object id="1" name="SpawnPoint" type="Marker" x="21" y="319.5">
    <point/>
   </object>
+  <object id="8" name="testPnj" type="PnjMarker" x="656" y="364">
+   <point/>
+  </object>
+  <object id="9" name="testPnj" type="pnjDetectDialog" x="623" y="341" width="60" height="41"/>
  </objectgroup>
 </map>
