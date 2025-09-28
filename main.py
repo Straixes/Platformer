@@ -1,6 +1,5 @@
 from inventory.inventory import inventory
 from inventory.equipment import equipment
-from Menu.mainMenu import mainMenu
 from Menu.inventoryMenu import inventoryMenu
 import pygame
 
