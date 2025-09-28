@@ -152,9 +152,13 @@ class text():
 
 
 class MultiTexts():
-    def __init__(self,texts,size,color,center,fontName=None): 
+    def __init__(self,texts,size,color,center,fontName=None,initialText=None): 
         self.texts=texts
-        self.currentTextIndex=0 
+        self.currentTextIndex=0
+        for i in range(len(texts)):
+            if texts[i]==initialText:
+                self.currentTextIndex=i 
+                break
         if fontName!=None:
             self.font = os.path.join("Menu", "Assets", "fonts", fontName)
         else:

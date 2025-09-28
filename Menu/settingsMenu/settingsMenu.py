@@ -1,14 +1,25 @@
 import pygame
 from ..baseMenu import baseMenu 
-
+from Menu.settingsMenu.settings import saveSettings,loadSettings
 from ..Assets.assets import buttonImage,MultiTexts,text,background
 
 class settingsMenu(baseMenu):
     def __init__(self, game):
         super().__init__(game)
         #Textchangeable
-        self.multiText=[MultiTexts([" 1920 x 1080 ","1600 x 900","1366 x 768","1280 x 720"],50,(0,0,0),(1300,200)),
-                        MultiTexts(["plein ecran","fenetré"],50,(0,0,0),(1300,275))]
+        settings=loadSettings()
+        def getCurrentResolutionText():
+            x,y=settings["resolution"]
+            textResolution=f'{x} x {y}'
+            return textResolution
+        def getCurrentFullScreenText():
+            if settings["fullscreen"]:
+                return "plein ecran"
+            else:
+                return "fenetré"
+            
+        self.multiText=[MultiTexts(["1920 x 1080","1600 x 900","1366 x 768","1280 x 720"],50,(0,0,0),(1300,200),initialText=getCurrentResolutionText()),
+                        MultiTexts(["plein ecran","fenetré"],50,(0,0,0),(1300,275),initialText=getCurrentFullScreenText())]
         
 
         self.background=background("background.png")
@@ -40,13 +51,20 @@ class settingsMenu(baseMenu):
         self.game.state=mainMenu(self.game)
 
     def validChange(self):
-        dictResolution={"1280 x 720" : (1280,720),"1366 x 768": (1366,768),"1600 x 900": (1600,900)," 1920 x 1080 ": (1920,1080)}
+        dictResolution={"1280 x 720" : [1280,720],"1366 x 768": [1366,768],"1600 x 900": [1600,900],"1920 x 1080": [1920,1080]}
         if self.multiText[1].getCurrentText()=="plein ecran":
-            self.screen= pygame.display.set_mode(dictResolution[self.multiText[0].getCurrentText()], pygame.FULLSCREEN)
+            self.game.screen= pygame.display.set_mode(dictResolution[self.multiText[0].getCurrentText()], pygame.FULLSCREEN)
             self.updateSize(dictResolution[self.multiText[0].getCurrentText()])
         else:
-            self.screen= pygame.display.set_mode(dictResolution[self.multiText[0].getCurrentText()])
+            self.game.screen= pygame.display.set_mode(dictResolution[self.multiText[0].getCurrentText()])
             self.updateSize(dictResolution[self.multiText[0].getCurrentText()])
+            
+        settings={
+            "volume": 1.0,
+            "resolution": dictResolution[self.multiText[0].getCurrentText()],
+            "fullscreen": self.multiText[1].getCurrentText()=="plein ecran"
+        }
+        saveSettings(settings)
 
 
 
