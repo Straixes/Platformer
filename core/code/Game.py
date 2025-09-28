@@ -15,7 +15,8 @@ class Game:
         self.font = pygame.font.SysFont("Arial", 24)
 
         self.space = pymunk.Space()
-        self.space.gravity = (0, 981)
+        self.space.gravity = (0, 1281)
+
 
         # groupes
         self.camera_group = CameraGroup()
@@ -32,9 +33,11 @@ class Game:
 
         self.level.setPlayer(player=self.player)
 
-
     def run(self):
         while True:
+            # dt en secondes depuis la dernière frame
+            dt = self.clock.tick(60) / 1000
+
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
@@ -42,16 +45,21 @@ class Game:
 
             self.screen.fill('#71ddee')  # nettoie l’écran
 
-            self.level.space.step(1/50)
+            # physique proportionnelle au temps réel
+            self.level.space.step(dt)
 
-            # update player avec collisions
-            self.player.update()
+            # update player avec collisions, en fonction du temps écoulé
+            self.player.update(dt)
 
             # update et draw
-            self.camera_group.update()
+            self.camera_group.update(dt)
             self.camera_group.customDraw(self.player)
 
-            self.screen.blit(self.font.render(f"FPS: {int(self.clock.get_fps())}", True, pygame.Color("white")), (10, 10))
+            # Gestion PNJ dialogue avec delta time
+            self.level.checkPnjZones(self.player, dt, self.font)
+
+            # affichage FPS
+            fps_text = self.font.render(f"FPS: {int(self.clock.get_fps())}", True, pygame.Color("white"))
+            self.screen.blit(fps_text, (10, 10))
 
             pygame.display.update()
-            self.clock.tick(60)

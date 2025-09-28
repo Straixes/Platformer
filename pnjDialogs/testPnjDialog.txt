@@ -1,0 +1,4 @@
+Bonjour, je suis un pnj de test pour commencer ce jeux.
+Normalement, tu vois ce text après l'autre après avoir attendu quelques secondes.
+Egalement, tu ne devrait plus voir les textes d'avant.
+Bonne continuation !

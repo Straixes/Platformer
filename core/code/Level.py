@@ -24,13 +24,21 @@ class Level:
         self.player = player
 
     def addPnj(self, pnj):
-        self.pnjDict[pnj.name] = [pnj, pnj.pos, (pnj.x, pnj.y)]
+        self.pnjDict[pnj.name] = [pnj, pnj.pos, (pnj.pos[0], pnj.pos[1], 0, 0)]
         for obj in self.tmxData.objects:
             if obj.type == 'PnjMarker':
                 self.pnjDict[obj.name][1] = (obj.x, obj.y)
                 self.pnjDict[obj.name][0].setPos((obj.x, obj.y))
             if obj.type == 'pnjDetectDialog':
-                 self.pnjDict[obj.name][2] = (obj.x, obj.y)
+                self.pnjDict[obj.name][2] = (obj.x, obj.y, obj.width, obj.height)
+
+    def checkPnjZones(self, player, dt, font):
+        for pnj, pos, detect in self.pnjDict.values():
+            if detect:
+                zone = pygame.Rect(detect[0], detect[1], detect[2], detect[3])
+                if zone.colliderect(player.rect):
+                    pnj.onPlayerNearby(dt, font)
+
 
     def takeAllLayers(self):
         for layer in self.tmxData.layers:
