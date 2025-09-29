@@ -20,6 +20,7 @@ class Game:
 
     def change_state(self, state):
         self.state = state
+    
     def run(self):
         run=True
         while run:
@@ -33,20 +34,21 @@ class Game:
             self.state.draw(self.logicalSurface)
             
             window_width, window_height = self.screen.get_size()
-            scale_x = window_width / self.LOGICAL_WIDTH
-            scale_y = window_height / self.LOGICAL_HEIGHT
+            scale_x = window_width / 1920
+            scale_y = window_height / 1080
             scale = min(scale_x, scale_y)
 
-            scaled_width = int(self.LOGICAL_WIDTH * scale)
-            scaled_height = int(self.LOGICAL_HEIGHT * scale)
+            scaled_width = int(1920 * scale)
+            scaled_height = int(1080 * scale)
 
             offset_x = (window_width - scaled_width) // 2
             offset_y = (window_height - scaled_height) // 2
 
+            print((offset_x,offset_y),(window_height,window_width),(scaled_height,scaled_width))
             # Effacer l’écran avec noir (bandes noires)
             self.screen.fill((0, 0, 0))
             
-            screen.blit(pygame.transform.scale(self.logicalSurface, self.screen.get_size()),(offset_x, offset_y))
+            screen.blit(pygame.transform.scale(self.logicalSurface, (scaled_width,scaled_height)),(offset_x, offset_y))
             pygame.display.flip()
 
 game=Game()
