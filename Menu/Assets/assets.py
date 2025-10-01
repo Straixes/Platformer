@@ -241,4 +241,9 @@ class image():
     def update(self,screen):
         self.draw(screen)
         
-            
+
+def getMousePos(ScreenInfo):
+    mousePos=pygame.mouse.get_pos()
+    new_x = -ScreenInfo[0][0] + int(mousePos[0] / ScreenInfo[1])
+    new_y = -ScreenInfo[0][1] + int(mousePos[1] / ScreenInfo[1])
+    return (new_x,new_y)

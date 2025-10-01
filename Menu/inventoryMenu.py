@@ -1,5 +1,5 @@
 from state import State 
-from .Assets.assets import buttonImage,background,image,text,MultiTexts
+from .Assets.assets import buttonImage,background,image,text,MultiTexts,getMousePos
 import pygame
 import math
 class inventoryMenu(State):
@@ -109,8 +109,8 @@ class inventoryMenu(State):
     def drawBackground(self,screen):
         self.background.blitBackground(screen)
     
-    def drawButtons(self,screen):
-        mouse_pos = pygame.mouse.get_pos()
+    def drawButtons(self,screen,ScreenInfo):
+        mouse_pos = getMousePos(ScreenInfo)
         for btn in self.buttons:
             btn.draw(screen,mouse_pos)
 
@@ -133,9 +133,9 @@ class inventoryMenu(State):
         for img in self.images:
             img.update(screen)
     
-    def draw(self, screen):
+    def draw(self, screen,ScreenInfo):
         self.drawBackground(screen)
-        self.drawButtons(screen)
+        self.drawButtons(screen,ScreenInfo)
         self.blitImage(screen)
         self.drawEquipments(screen)
         self.drawEquipedEquipments(screen)
@@ -147,8 +147,8 @@ class inventoryMenu(State):
             self.draw_blinking_border(screen, self.rectSlotAccessory3)
 
     ### handle events########
-    def updateButtonsEvents(self,events):
-        mousePos = pygame.mouse.get_pos()
+    def updateButtonsEvents(self,events,ScreenInfo):
+        mousePos = getMousePos(ScreenInfo)
         mouseClick = pygame.mouse.get_pressed()
         mouseGetClicked = False
         
@@ -158,8 +158,8 @@ class inventoryMenu(State):
         for btn in self.buttons:
             btn.update(mouseClick,mouseGetClicked,mousePos)
 
-    def scrollInventory(self,events):
-        mousePos = pygame.mouse.get_pos()
+    def scrollInventory(self,events,ScreenInfo):
+        mousePos = getMousePos(ScreenInfo)
         if self.scrollRect.collidepoint(mousePos):
 
             for event in events:
@@ -169,8 +169,8 @@ class inventoryMenu(State):
                     elif event.button == 5:
                         self.inventory.increaseLign()
     
-    def buttonEquipment(self,events):
-        mousePos = pygame.mouse.get_pos()
+    def buttonEquipment(self,events,ScreenInfo):
+        mousePos = getMousePos(ScreenInfo)
         for event in events:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1 and self.scrollRect.collidepoint(mousePos):
@@ -201,8 +201,8 @@ class inventoryMenu(State):
                                     self.selectingAccessory=True
                                     self.selectedEquipment=equipment
 
-    def selectionSwitchAccessory(self,events):
-        mousePos = pygame.mouse.get_pos()
+    def selectionSwitchAccessory(self,events,ScreenInfo):
+        mousePos = getMousePos(ScreenInfo)
         for event in events:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
@@ -213,8 +213,8 @@ class inventoryMenu(State):
                     elif self.rectSlotAccessory3.collidepoint(mousePos):
                         self.inventory.switchEquipment(self.selectedEquipment,'accessory3')
                     self.selectingAccessory=False
-    def unequipEquipment(self,events):
-        mousePos = pygame.mouse.get_pos()
+    def unequipEquipment(self,events,ScreenInfo):
+        mousePos = getMousePos(ScreenInfo)
         for event in events:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
@@ -239,12 +239,12 @@ class inventoryMenu(State):
 
 
 
-    def handle_events(self, events):
+    def handle_events(self, events,ScreenInfo):
         if self.selectingAccessory:
-            self.selectionSwitchAccessory(events)
+            self.selectionSwitchAccessory(events,ScreenInfo)
         else:
-            self.scrollInventory(events)
-            self.updateButtonsEvents(events)
-            self.unequipEquipment(events)
-            self.buttonEquipment(events)
+            self.scrollInventory(events,ScreenInfo)
+            self.updateButtonsEvents(events,ScreenInfo)
+            self.unequipEquipment(events,ScreenInfo)
+            self.buttonEquipment(events,ScreenInfo)
 

@@ -1,5 +1,6 @@
 import pygame
 from state import State
+from Menu.Assets.assets import getMousePos
 class baseMenu(State):
     def __init__(self,game):
         super().__init__(game)
@@ -11,8 +12,8 @@ class baseMenu(State):
         self.additionalFonction=[]
         self.background=None
 
-    def updateButtonsEvents(self,events):
-        mousePos = pygame.mouse.get_pos()
+    def updateButtonsEvents(self,events,ScreenInfo):
+        mousePos = getMousePos(ScreenInfo)
         mouseClick = pygame.mouse.get_pressed()
         mouseGetClicked = False
         
@@ -22,8 +23,8 @@ class baseMenu(State):
         for btn in self.buttons:
             btn.update(mouseClick,mouseGetClicked,mousePos)
     
-    def drawButtons(self,screen):
-        mouse_pos = pygame.mouse.get_pos()
+    def drawButtons(self,screen,ScreenInfo):
+        mouse_pos = getMousePos(ScreenInfo)
         for btn in self.buttons:
             btn.draw(screen,mouse_pos)
 
@@ -56,15 +57,15 @@ class baseMenu(State):
     def drawBackground(self,screen):
         self.background.blitBackground(screen)
 
-    def update(self):
+    def update(self,ScreenInfo):
         self.checkAdditionalFonction
     
-    def handle_events(self, events):
+    def handle_events(self, events,ScreenInfo):
         self.checkCommands(events)
-        self.updateButtonsEvents(events)
+        self.updateButtonsEvents(events,ScreenInfo)
     
-    def draw(self, screen):
+    def draw(self, screen,ScreenInfo):
         self.drawBackground(screen)
         self.blitImage(screen)
-        self.drawButtons(screen)
+        self.drawButtons(screen,ScreenInfo)
         self.blitTexts(screen)

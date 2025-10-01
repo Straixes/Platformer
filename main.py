@@ -29,10 +29,7 @@ class Game:
             for e in events:
                 if e.type == pygame.QUIT:
                     run=False
-            self.state.handle_events(events)
-            self.state.update()
-            self.state.draw(self.logicalSurface)
-            
+                    
             window_width, window_height = self.screen.get_size()
             scale_x = window_width / 1920
             scale_y = window_height / 1080
@@ -43,10 +40,18 @@ class Game:
 
             offset_x = (window_width - scaled_width) // 2
             offset_y = (window_height - scaled_height) // 2
-
+            
+            
+            ScreenInfo=((offset_x, offset_y),scale)
+            
+            self.state.handle_events(events,ScreenInfo)
+            self.state.update(ScreenInfo)
+            self.state.draw(self.logicalSurface,ScreenInfo)
             self.screen.fill((0, 0, 0))
             
-            screen.blit(pygame.transform.scale(self.logicalSurface, (scaled_width,scaled_height)),(offset_x, offset_y))
+            
+            
+            self.screen.blit(pygame.transform.scale(self.logicalSurface, (scaled_width,scaled_height)),(offset_x, offset_y))
             pygame.display.flip()
 
 game=Game()

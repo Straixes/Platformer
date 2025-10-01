@@ -54,10 +54,9 @@ class settingsMenu(baseMenu):
         dictResolution={"1280 x 720" : [1280,720],"1366 x 768": [1366,768],"1600 x 900": [1600,900],"1920 x 1080": [1920,1080]}
         if self.multiText[1].getCurrentText()=="plein ecran":
             self.game.screen= pygame.display.set_mode(dictResolution[self.multiText[0].getCurrentText()], pygame.FULLSCREEN)
-            self.updateSize(dictResolution[self.multiText[0].getCurrentText()])
         else:
-            self.game.screen= pygame.display.set_mode(dictResolution[self.multiText[0].getCurrentText()])
-            self.updateSize(dictResolution[self.multiText[0].getCurrentText()])
+            self.game.screen= pygame.display.set_mode(dictResolution[self.multiText[0].getCurrentText()],pygame.RESIZABLE)
+
             
         settings={
             "volume": 1.0,
