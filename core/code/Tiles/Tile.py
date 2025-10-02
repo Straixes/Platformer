@@ -21,6 +21,7 @@ class Tile(pygame.sprite.Sprite):
 
         # Créer la forme avec les bonnes dimensions
         self.shape = pymunk.Poly.create_box(self.body, (self.rect.width, self.rect.height))
+        self.shape.collision_type = 2
 
         # CRUCIAL: Propriétés de collision
         self.shape.friction = 0.7

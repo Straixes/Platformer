@@ -14,28 +14,31 @@ class Game:
         self.clock = pygame.time.Clock()
         self.font = pygame.font.SysFont("Arial", 24)
 
+        # Espace physique
         self.space = pymunk.Space()
         self.space.gravity = (0, 1281)
 
+        # Augmenter les itérations pour éviter le tunneling
+        self.space.iterations = 30
 
-        # groupes
+        # Groupes
         self.camera_group = CameraGroup()
 
-        # niveau
+        # Niveau
         self.level = Level(self.screen, self.camera_group, self.space)
 
-        # joueur
+        # Joueur
         self.player = Player(self.level.spawnPoint, self.camera_group, self.space)
 
-        # Pnj
-        self.pnj1 = Pnj(self.screen, self.camera_group, 'testPnj')
+        # PNJ
+        self.pnj1 = Pnj(self.screen, self.camera_group, "testPnj")
         self.level.addPnj(self.pnj1)
 
+        # Associer le joueur au niveau
         self.level.setPlayer(player=self.player)
 
     def run(self):
         while True:
-            # dt en secondes depuis la dernière frame
             dt = self.clock.tick(60) / 1000
 
             for event in pygame.event.get():
@@ -43,22 +46,22 @@ class Game:
                     pygame.quit()
                     sys.exit()
 
-            self.screen.fill('#71ddee')  # nettoie l’écran
+            self.screen.fill("#71ddee")
 
-            # physique proportionnelle au temps réel
-            self.level.space.step(dt)
-
-            # update player avec collisions, en fonction du temps écoulé
+            # Update player (avant le step physique pour l'input)
             self.player.update(dt)
 
-            # update et draw
+            # Step physique
+            self.space.step(dt)
+
+            # Update & draw caméra
             self.camera_group.update(dt)
             self.camera_group.customDraw(self.player)
 
-            # Gestion PNJ dialogue avec delta time
+            # Gestion PNJ dialogue
             self.level.checkPnjZones(self.player, dt, self.font)
 
-            # affichage FPS
+            # Affichage FPS
             fps_text = self.font.render(f"FPS: {int(self.clock.get_fps())}", True, pygame.Color("white"))
             self.screen.blit(fps_text, (10, 10))
 

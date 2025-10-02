@@ -1,6 +1,7 @@
 import pygame
 import os
 from core.code.Tiles.Tile import Tile
+from core.code.Tiles.MouvingTile import MouvingTile
 from pytmx.util_pygame import load_pygame
 
 class Level:
@@ -53,6 +54,9 @@ class Level:
             pos = obj.x, obj.y
             if obj.type in ('Building', 'Vegetation'):
                 Tile(pos, obj.image, self.group, self.space)
+            if obj.type in ('moovingPlateform'):
+                MouvingTile(pos, obj.image, self.group, self.space)
+
 
     def shapes(self):
         for obj in self.tmxData.objects:
